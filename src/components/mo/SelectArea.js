@@ -35,14 +35,16 @@ const SelectArea = ({
     setIsModalOpen(false)
   }
   useEffect(() => {
+    console.log('모달 오픈')
     const handleBack = (event) => {
-      event.preventDefault()
+      window.history.pushState({}, '')
       setIsModalOpen(false)
     }
 
     window.addEventListener('popstate', handleBack)
 
     return () => {
+      console.log('모달 클로즈')
       window.removeEventListener('popstate', handleBack)
     }
   }, [isModalOpen])
