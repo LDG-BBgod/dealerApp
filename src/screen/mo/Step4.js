@@ -15,6 +15,7 @@ import Overlay from '../../components/mo/Overlay'
 import SelectArea from '../../components/mo/SelectArea'
 
 const Step4 = ({ setStep, isPageInit = false }) => {
+  const { jumin } = useSelector((state) => state.jumin)
   const [isComplete, setIsComplete] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -354,6 +355,13 @@ const Step4 = ({ setStep, isPageInit = false }) => {
     option7,
     option8,
   ])
+  useEffect(() => {
+    if (range.id === 'famradio01') {
+      setMinBrith(jumin)
+    } else {
+      setMinBrith('')
+    }
+  }, [range, jumin])
 
   return (
     <MainSection>

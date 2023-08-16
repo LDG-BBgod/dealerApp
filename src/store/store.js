@@ -3,6 +3,7 @@ import { changeCarInfo } from '../reducers/carInfo'
 import { carSelectComplete } from '../reducers/carSelectComplete'
 import { dealer } from '../reducers/dealer'
 import { phone } from '../reducers/phone'
+import { jumin } from '../reducers/jumin'
 import { resultData } from '../reducers/resultData'
 
 import logger from 'redux-logger'
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   carSelectComplete: carSelectComplete,
   dealer: dealer,
   phone: phone,
+  jumin: jumin,
   resultData: resultData,
 })
 

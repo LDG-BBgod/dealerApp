@@ -16,7 +16,6 @@ const InputArea = ({ text, children }) => {
   return (
     <Box>
       <Text>{text}</Text>
-      <Spacer space={15} />
       {children}
     </Box>
   )

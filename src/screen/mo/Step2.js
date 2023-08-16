@@ -126,6 +126,7 @@ const Step2 = ({ setStep, isPageInit = false }) => {
 export default Step2
 
 const InputAuth = styled.input`
+padding-top: 15px;
   border: none;
   box-sizing: border-box;
   width: 100%;

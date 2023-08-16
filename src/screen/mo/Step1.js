@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import axios from 'axios'
 
 import { setPhone as setPhoneNum } from '../../actions/phone'
+import { setJumin } from '../../actions/jumin'
 
 import MainSection from '../../components/mo/MainSection'
 import StepHeader from '../../components/mo/StepHeader'
@@ -86,9 +87,10 @@ const Step1test = ({ setStep, isPageInit = false }) => {
           if (!res.data.err) {
             if (res.data.msg.success) {
               dispatch(setPhoneNum(phone))
+              dispatch(setJumin(fsn))
               setStep(2)
             } else {
-              alert('입력값을 다시한번 확인해주세요')
+              alert('조회불가, 고객정보를 다시한번 확인해주세요.')
             }
           } else {
             alert('전산프로그램에 오류가 발생하였습니다.')
@@ -225,6 +227,7 @@ const SnBox = styled.div`
   align-items: center;
 `
 const InputName = styled.input`
+  padding-top: 15px;
   border: none;
   box-sizing: border-box;
   width: 100%;
@@ -232,6 +235,7 @@ const InputName = styled.input`
   color: #9f9f9f;
 `
 const InputFsn = styled.input`
+  padding-top: 15px;
   border: none;
   box-sizing: border-box;
   width: 100%;
@@ -240,6 +244,7 @@ const InputFsn = styled.input`
   letter-spacing: 2px;
 `
 const InputBsn = styled.input`
+  padding-top: 15px;
   padding: 0 10%;
   border: none;
   box-sizing: border-box;
@@ -250,6 +255,7 @@ const InputBsn = styled.input`
   letter-spacing: 4px;
 `
 const InputTelcom = styled.select`
+  padding-top: 15px;
   border: none;
   box-sizing: border-box;
   width: 100%;
@@ -257,6 +263,7 @@ const InputTelcom = styled.select`
   color: #9f9f9f;
 `
 const InputPhone = styled.input`
+  padding-top: 15px;
   border: none;
   box-sizing: border-box;
   width: 100%;

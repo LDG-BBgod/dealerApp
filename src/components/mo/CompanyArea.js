@@ -26,7 +26,7 @@ const CompanyArea = ({ data = null, selected = false, func = null }) => {
       </div>
     )
   }
-  const isMoney = data.money !== '전산오류'
+  const isMoney = data.money !== '조회불가'
 
   return (
     <Box>

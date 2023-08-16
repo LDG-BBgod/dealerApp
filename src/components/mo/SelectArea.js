@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styled } from 'styled-components'
 
 import Spacer from './Spacer'
@@ -19,7 +19,11 @@ const SelectArea = ({
 
   const handleSelect = async () => {
     if (posible) {
-      const list = await selectFunc(options)
+      let list = await selectFunc(options)
+      console.log(list)
+      if (!Array.isArray(list)) {
+        list = [list]
+      }
       setArrData(list)
       setIsModalOpen(true)
     } else {
@@ -30,6 +34,19 @@ const SelectArea = ({
     optionFunc({ text, id, state: true })
     setIsModalOpen(false)
   }
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === 'Escape' && isModalOpen) {
+        setIsModalOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress)
+    }
+  }, [isModalOpen])
   return (
     <div>
       <Text>{text}</Text>
