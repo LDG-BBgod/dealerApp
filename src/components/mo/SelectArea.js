@@ -35,16 +35,15 @@ const SelectArea = ({
     setIsModalOpen(false)
   }
   useEffect(() => {
-    const handleKeyPress = (event) => {
-      if (event.key === 'Escape' && isModalOpen) {
-        setIsModalOpen(false)
-      }
+    const handleBack = (event) => {
+      event.preventDefault()
+      setIsModalOpen(false)
     }
 
-    window.addEventListener('keydown', handleKeyPress)
+    window.addEventListener('popstate', handleBack)
 
     return () => {
-      window.removeEventListener('keydown', handleKeyPress)
+      window.removeEventListener('popstate', handleBack)
     }
   }, [isModalOpen])
   return (
