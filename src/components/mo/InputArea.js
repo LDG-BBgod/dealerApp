@@ -3,7 +3,7 @@ import Spacer from './Spacer'
 
 const Box = styled.div`
   box-sizing: border-box;
-  padding: 10px ;
+  padding: 10px;
   width: 100%;
   height: 72px;
   border: solid 0.5px #cacaca;
@@ -16,7 +16,7 @@ const InputArea = ({ text, children }) => {
   return (
     <Box>
       <Text>{text}</Text>
-      <Spacer space={10} />
+      <Spacer space={15} />
       {children}
     </Box>
   )

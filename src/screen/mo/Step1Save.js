@@ -1,9 +1,7 @@
 import { styled } from 'styled-components'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import axios from 'axios'
 
-import { setPhone as setPhoneNum } from '../../actions/phone'
+import axios from 'axios'
 
 import MainSection from '../../components/mo/MainSection'
 import StepHeader from '../../components/mo/StepHeader'
@@ -11,24 +9,20 @@ import Title from '../../components/mo/Title'
 import Spacer from '../../components/mo/Spacer'
 import StepButton from '../../components/mo/StepButton'
 import InputArea from '../../components/mo/InputArea'
+import CustomCheckbox from '../../components/mo/CustomCheckbox'
 import Overlay from '../../components/mo/Overlay'
 import Loading from '../../components/mo/Loading'
-import Auth from './Auth'
-import AuthList from './AuthList'
 
-const Step1test = ({ setStep, isPageInit = false }) => {
-  const [name, setName] = useState('') //초기 ''
-  const [fsn, setFsn] = useState('') //초기 ''
-  const [bsn, setBsn] = useState('') //초기 ''
-  const [telcom, setTelcom] = useState('SKT') //초기 'SKT'
-  const [phone, setPhone] = useState('') //초기 ''
+const Step1 = ({ setStep, isPageInit = false }) => {
+  const [name, setName] = useState('이동권') //초기 ''
+  const [fsn, setFsn] = useState('960527') //초기 ''
+  const [bsn, setBsn] = useState('1157812') //초기 ''
+  const [telcom, setTelcom] = useState('알뜰LG') //초기 'SKT'
+  const [phone, setPhone] = useState('01054088229') //초기 ''
+  const [isChecked, setIsChecked] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isModalOpen2, setIsModalOpen2] = useState(false)
-  const [isModalOpen3, setIsModalOpen3] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-
-  const dispatch = useDispatch()
 
   const handleName = (e) => {
     setName(e.target.value)
@@ -57,61 +51,53 @@ const Step1test = ({ setStep, isPageInit = false }) => {
 
   const handleButton = async () => {
     if (isPageInit) {
-      setIsModalOpen(true)
+      setIsLoading(true)
+      const body = {
+        name,
+        fsn,
+        bsn,
+        telcom,
+        phone,
+      }
+      try {
+        const res = axios
+          .post(
+            `http://${window.location.hostname}:5000/api/compare/phoneSubmit`,
+            body,
+          )
+          .then((res) => {
+            setIsLoading(false)
+            if (!res.data.err) {
+              if (res.data.msg.success) {
+                setStep(2)
+              } else {
+                alert('입력값을 다시한번 확인해주세요')
+              }
+            } else {
+              alert(
+                '전산프로그램에 오류가 발생하였습니다. 페이지를 새로고침해주세요.',
+              )
+            }
+          })
+      } catch (err) {
+        setIsLoading(false)
+        console.log('백엔드 서버 에러')
+      }
     } else {
       alert('세션준비중입니다. 잠시후 다시 시도해주세요.')
-    }
-  }
-  const handleModalButton = async () => {
-    setIsModalOpen(false)
-    setIsLoading(true)
-    const body = {
-      name,
-      fsn,
-      bsn,
-      telcom,
-      phone,
-    }
-    try {
-      await axios
-        .post(
-          `http://${window.location.hostname}:5000/api/compare/phoneSubmit`,
-          body,
-          {
-            timeout: 10000,
-          },
-        )
-        .then((res) => {
-          setIsLoading(false)
-          if (!res.data.err) {
-            if (res.data.msg.success) {
-              dispatch(setPhoneNum(phone))
-              setStep(2)
-            } else {
-              alert('입력값을 다시한번 확인해주세요')
-            }
-          } else {
-            alert('전산프로그램에 오류가 발생하였습니다.')
-            window.location.reload()
-          }
-        })
-    } catch (err) {
-      setIsLoading(false)
-      alert('전산프로그램에 오류가 발생하였습니다.')
-      window.location.reload()
     }
   }
 
   useEffect(() => {
     const checkInput = () => {
-      if (name && fsn && bsn && telcom && phone) {
+      if (name && fsn && bsn && telcom && phone && isChecked) {
         setIsComplete(true)
       } else {
         setIsComplete(false)
       }
     }
     checkInput()
-  }, [name, fsn, bsn, telcom, phone])
+  }, [name, fsn, bsn, telcom, phone, isChecked])
 
   return (
     <MainSection>
@@ -121,12 +107,7 @@ const Step1test = ({ setStep, isPageInit = false }) => {
       <Spacer space={30} />
 
       <InputArea text={'고객(피보험자) 성함'}>
-        <InputName
-          type="text"
-          value={name}
-          onChange={handleName}
-          autoComplete="one-time-code"
-        />
+        <InputName type="text" value={name} onChange={handleName} />
       </InputArea>
       <Spacer space={16} />
 
@@ -137,7 +118,6 @@ const Step1test = ({ setStep, isPageInit = false }) => {
             value={fsn}
             onChange={handleFsn}
             style={{ flexBasis: '50%' }}
-            autoComplete="one-time-code"
           />
           <div
             style={{
@@ -152,7 +132,6 @@ const Step1test = ({ setStep, isPageInit = false }) => {
             value={bsn}
             onChange={handleBsn}
             style={{ flexBasis: '50%' }}
-            autoComplete="one-time-code"
           />
         </SnBox>
       </InputArea>
@@ -171,18 +150,38 @@ const Step1test = ({ setStep, isPageInit = false }) => {
         </InputArea>
         <div></div>
         <InputArea text={'고객전화번호'}>
-          <InputPhone
-            type="text"
-            value={phone}
-            onChange={handlePhone}
-            autoComplete="one-time-code"
-          />
+          <InputPhone type="text" value={phone} onChange={handlePhone} />
         </InputArea>
       </div>
-      <Spacer space={40} />
+      <Spacer space={50} />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <CustomCheckbox
+          text={'개인정보 수집 동의'}
+          isChecked={isChecked}
+          onChange={setIsChecked}
+        />
+        <div
+          style={{
+            fontSize: 14,
+            color: '#919191',
+          }}
+          onClick={() => {
+            setIsModalOpen(true)
+          }}
+        >
+          [보기]
+        </div>
+      </div>
+      <Spacer space={10} />
       <StepButton
         buttonFunc={handleButton}
-        text={'고객에게 정보 동의 요청'}
+        text={'인증번호 발송'}
         completed={isComplete}
       />
       <Spacer space={8} />
@@ -190,32 +189,15 @@ const Step1test = ({ setStep, isPageInit = false }) => {
       <Spacer space={6} />
       <BottomText>광고 전화는 가지 않습니다</BottomText>
       <Spacer space={40} />
-      {isLoading && <Loading />}
       {isModalOpen && (
         <Overlay>
-          <Auth
-            func={handleModalButton}
-            backFunc={() => {
-              setIsModalOpen(false)
-            }}
-            bogiFunc={() => {
-              setIsModalOpen(false)
-              setIsModalOpen2(true)
-            }}
-          />
+          <div>
+            <div>test</div>
+            <button onClick={() => setIsModalOpen(false)}>닫기</button>
+          </div>
         </Overlay>
       )}
-      {isModalOpen2 && (
-        <Overlay>
-          <AuthList
-            backFunc={() => {
-              setIsModalOpen(true)
-              setIsModalOpen2(false)
-            }}
-          />
-        </Overlay>
-      )}
-      {isModalOpen3 && <Overlay></Overlay>}
+      {isLoading && <Loading />}
     </MainSection>
   )
 }
@@ -270,4 +252,4 @@ const BottomText = styled.div`
   text-align: center;
 `
 
-export default Step1test
+export default Step1

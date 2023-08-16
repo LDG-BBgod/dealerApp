@@ -1,24 +1,43 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import { isMobile } from 'react-device-detect'
+import { useDispatch } from 'react-redux'
+import axios from 'axios'
+
+import { changeIsMobile } from './actions/dealer'
 
 import Home from './screen/mo/Home'
 import Root from './screen/mo/Root'
-import Step1 from './screen/mo/Step1'
-import Step2 from './screen/mo/Step2'
-import Step3 from './screen/mo/Step3'
-import Step4 from './screen/mo/Step4'
-import Step5 from './screen/mo/Step5'
+import Compare from './screen/mo/Compare'
 
 function App() {
+  const location = useLocation()
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if (location.pathname !== '/mo/compare') {
+      const shutDown = async () => {
+        try {
+          await axios.post(
+            `http://${window.location.hostname}:5000/api/compare/shutdown`,
+          )
+        } catch (error) {
+          console.error('Failed to send server shutdown request:', error)
+        }
+      }
+      shutDown()
+    }
+  }, [location])
+
+  useEffect(() => {
+    dispatch(changeIsMobile(isMobile))
+  }, [dispatch])
+
   return (
     <div className="App">
       <Routes>
         <Route path="/" Component={Root} />
         <Route path="/mo" Component={Home} />
-        <Route path="/mo/step1" Component={Step1} />
-        <Route path="/mo/step2" Component={Step2} />
-        <Route path="/mo/step3" Component={Step3} />
-        <Route path="/mo/step4" Component={Step4} />
-        <Route path="/mo/step5" Component={Step5} />
+        <Route path="/mo/compare" Component={Compare} />
       </Routes>
     </div>
   )

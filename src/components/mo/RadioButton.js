@@ -1,20 +1,19 @@
-const StepButton = ({
+const RadioButton = ({
   buttonFunc = null,
   text = null,
-  completed = false,
-  nonCompletedButtonFunc = null,
-  backgroundColor = '#5b8def',
+  selected = true,
+  nonSlectedButtonFunc = null,
 }) => {
-  return completed ? (
+  return selected ? (
     <button
       onClick={buttonFunc}
       style={{
         boxSizing: 'border-box',
         width: '100%',
-        height: 40,
+        height: 35,
         color: '#fff',
-        backgroundColor: backgroundColor,
-        fontSize: 16,
+        backgroundColor: '#5b8def',
+        fontSize: 14,
         fontWeight: 'bold',
         textAlign: 'center',
         border: 'none',
@@ -25,14 +24,14 @@ const StepButton = ({
     </button>
   ) : (
     <button
-      onClick={nonCompletedButtonFunc}
+      onClick={nonSlectedButtonFunc}
       style={{
         boxSizing: 'border-box',
         width: '100%',
-        height: 40,
+        height: 35,
         color: '#fff',
         backgroundColor: '#CACACA',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 'bold',
         textAlign: 'center',
         border: 'none',
@@ -43,4 +42,4 @@ const StepButton = ({
     </button>
   )
 }
-export default StepButton
+export default RadioButton

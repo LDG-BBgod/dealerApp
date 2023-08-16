@@ -1,5 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useSelector } from 'react-redux'
+
+const MainSection = ({ children }) => {
+  const { isMobile } = useSelector((state) => state.dealer)
+
+  return (
+    <div>
+      {isMobile ? (
+        <SafeArea>{children}</SafeArea>
+      ) : (
+        <div style={{ width: 600, margin:'0 auto'}}>
+          <SafeArea>{children}</SafeArea>
+        </div>
+      )}
+    </div>
+  )
+}
+export default MainSection
 
 const SafeArea = styled.div`
   box-sizing: border-box;
@@ -9,8 +27,3 @@ const SafeArea = styled.div`
   display: flex;
   flex-direction: column;
 `
-
-const MainSection = ({ children }) => {
-  return <SafeArea>{children}</SafeArea>
-}
-export default MainSection
