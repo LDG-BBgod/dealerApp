@@ -14,12 +14,11 @@ function App() {
   const location = useLocation()
   const dispatch = useDispatch()
   useEffect(() => {
+    console.log(process.env.REACT_APP_SHUTDOWN)
     if (location.pathname !== '/mo/compare') {
       const shutDown = async () => {
         try {
-          await axios.post(
-            process.env.REACT_APP_SHUTDOWN,
-          )
+          await axios.post(process.env.REACT_APP_SHUTDOWN)
         } catch (error) {
           console.error('Failed to send server shutdown request:', error)
         }
