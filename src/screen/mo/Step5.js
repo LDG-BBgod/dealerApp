@@ -13,6 +13,7 @@ import Loading from '../../components/mo/Loading'
 import Overlay from '../../components/mo/Overlay'
 import StepButton from '../../components/mo/StepButton'
 import InputArea from '../../components/mo/InputArea'
+import CompanyLogo from '../../components/mo/CompanyLogo'
 
 const Step5 = ({ setStep, isPageInit = false }) => {
   const phoneNum = useSelector((state) => state.phone.phone)
@@ -282,6 +283,30 @@ const Step5 = ({ setStep, isPageInit = false }) => {
           </BottomText>
         </div>
       )}
+      {dtype === 'A' ? (
+        <div></div>
+      ) : (
+        <div>
+          <Spacer space={50} />
+          <SubTitle>딜러님께서 광고수수료를 받으실 수 있는</SubTitle>
+          <Spacer space={5} />
+          <SubTitle>보험사 목록입니다.</SubTitle>
+          <Spacer space={20} />
+          <CompanyLogo src={'/img/kb.svg'} />
+          <Spacer space={10} />
+          <CompanyLogo src={'/img/axa.svg'} />
+          <Spacer space={10} />
+          <CompanyLogo src={'/img/db.svg'} />
+          <Spacer space={10} />
+          <CompanyLogo src={'/img/hyeondae.svg'} />
+          <Spacer space={10} />
+          <CompanyLogo src={'/img/heungkuk.svg'} />
+          <Spacer space={10} />
+          <CompanyLogo src={'/img/hanhwa.svg'} />
+          <Spacer space={20} />
+          <SubTitle>고객가입확인 후 광고 수수료를 지급드립니다.</SubTitle>
+        </div>
+      )}
       <Spacer space={50} />
       {isModalOpen && (
         <Overlay>
@@ -380,3 +405,11 @@ const BottomText = styled.div`
   color: #ef5b5b;
   text-align: center;
 `
+const SubTitle = styled.div`
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+
+  color: #9f9f9f;
+`
+

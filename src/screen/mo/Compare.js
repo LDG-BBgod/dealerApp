@@ -42,7 +42,7 @@ const Compare = () => {
         window.location.reload()
       }
       // // 화면디자인할때 사용
-      // setStep(3)
+      // setStep(5)
       // 화면디자인할때 사용
     }
     initPage()

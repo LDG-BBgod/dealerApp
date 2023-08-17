@@ -12,9 +12,9 @@ import Spacer from '../../components/mo/Spacer'
 import CompanyLogo from '../../components/mo/CompanyLogo'
 import CustomCheckbox from '../../components/mo/CustomCheckbox'
 import StepButton from '../../components/mo/StepButton'
+import AuthArea from '../../components/mo/AuthArea'
 
 const AuthList = ({
-  func = null,
   backFunc = null,
   bogiFunc1 = null,
   bogiFunc2 = null,
@@ -43,11 +43,12 @@ const AuthList = ({
       <div
         style={{
           display: 'flex',
+          gap: 10,
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <CustomCheckbox
+        <AuthArea
           text={'개인(신용)정보의 수집•이용에 관한 사항'}
           isChecked={isChecked1}
           onChange={setIsChecked1}
@@ -56,6 +57,8 @@ const AuthList = ({
           style={{
             fontSize: 14,
             color: '#919191',
+            boxSizing: 'border-box',
+            width: 50,
           }}
           onClick={bogiFunc1}
         >
@@ -66,12 +69,13 @@ const AuthList = ({
       <div
         style={{
           display: 'flex',
+          gap: 10,
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <CustomCheckbox
-          text={'개인정보 수집 전체동의'}
+        <AuthArea
+          text={'개인(신용)정보의 조회에 관한 사항'}
           isChecked={isChecked2}
           onChange={setIsChecked2}
         />
@@ -79,6 +83,8 @@ const AuthList = ({
           style={{
             fontSize: 14,
             color: '#919191',
+            boxSizing: 'border-box',
+            width: 50,
           }}
           onClick={bogiFunc2}
         >
@@ -89,12 +95,13 @@ const AuthList = ({
       <div
         style={{
           display: 'flex',
+          gap: 10,
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <CustomCheckbox
-          text={'개인정보 수집 전체동의'}
+        <AuthArea
+          text={'개인(신용)정보의 제공에 관한 사항'}
           isChecked={isChecked3}
           onChange={setIsChecked3}
         />
@@ -102,6 +109,8 @@ const AuthList = ({
           style={{
             fontSize: 14,
             color: '#919191',
+            boxSizing: 'border-box',
+            width: 50,
           }}
           onClick={bogiFunc3}
         >
@@ -112,12 +121,13 @@ const AuthList = ({
       <div
         style={{
           display: 'flex',
+          gap: 10,
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <CustomCheckbox
-          text={'개인정보 수집 전체동의'}
+        <AuthArea
+          text={'민감정보 및 고유식별정보의 처리에 관한 사항'}
           isChecked={isChecked4}
           onChange={setIsChecked4}
         />
@@ -125,6 +135,8 @@ const AuthList = ({
           style={{
             fontSize: 14,
             color: '#919191',
+            boxSizing: 'border-box',
+            width: 50,
           }}
           onClick={bogiFunc4}
         >
@@ -135,12 +147,13 @@ const AuthList = ({
       <div
         style={{
           display: 'flex',
+          gap: 10,
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <CustomCheckbox
-          text={'개인정보 수집 전체동의'}
+        <AuthArea
+          text={'개인정보 수집 • 이용/취급위탁 동의'}
           isChecked={isChecked5}
           onChange={setIsChecked5}
         />
@@ -148,6 +161,8 @@ const AuthList = ({
           style={{
             fontSize: 14,
             color: '#919191',
+            boxSizing: 'border-box',
+            width: 50,
           }}
           onClick={bogiFunc5}
         >
@@ -158,12 +173,13 @@ const AuthList = ({
       <div
         style={{
           display: 'flex',
+          gap: 10,
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <CustomCheckbox
-          text={'개인정보 수집 전체동의'}
+        <AuthArea
+          text={'본인확인서비스 이용약관 동의'}
           isChecked={isChecked6}
           onChange={setIsChecked6}
         />
@@ -171,6 +187,8 @@ const AuthList = ({
           style={{
             fontSize: 14,
             color: '#919191',
+            boxSizing: 'border-box',
+            width: 50,
           }}
           onClick={bogiFunc6}
         >
@@ -181,12 +199,13 @@ const AuthList = ({
       <div
         style={{
           display: 'flex',
+          gap: 10,
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <CustomCheckbox
-          text={'개인정보 수집 전체동의'}
+        <AuthArea
+          text={'고유식별정보처리 동의'}
           isChecked={isChecked7}
           onChange={setIsChecked7}
         />
@@ -194,6 +213,8 @@ const AuthList = ({
           style={{
             fontSize: 14,
             color: '#919191',
+            boxSizing: 'border-box',
+            width: 50,
           }}
           onClick={bogiFunc7}
         >
@@ -204,12 +225,13 @@ const AuthList = ({
       <div
         style={{
           display: 'flex',
+          gap: 10,
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <CustomCheckbox
-          text={'개인정보 수집 전체동의'}
+        <AuthArea
+          text={'SKT 본인확인 이용 약관'}
           isChecked={isChecked8}
           onChange={setIsChecked8}
         />
@@ -217,6 +239,8 @@ const AuthList = ({
           style={{
             fontSize: 14,
             color: '#919191',
+            boxSizing: 'border-box',
+            width: 50,
           }}
           onClick={bogiFunc8}
         >

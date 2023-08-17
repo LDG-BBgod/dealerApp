@@ -16,6 +16,14 @@ import Overlay from '../../components/mo/Overlay'
 import Loading from '../../components/mo/Loading'
 import Auth from './Auth'
 import AuthList from './AuthList'
+import Text1 from '../text1'
+import Text2 from '../text2'
+import Text3 from '../text3'
+import Text4 from '../text4'
+import Text5 from '../text5'
+import Text6 from '../text6'
+import Text7 from '../text7'
+import Text8 from '../text8'
 
 const Step1test = ({ setStep, isPageInit = false }) => {
   const [name, setName] = useState('') //초기 ''
@@ -28,6 +36,7 @@ const Step1test = ({ setStep, isPageInit = false }) => {
   const [isModalOpen2, setIsModalOpen2] = useState(false)
   const [isModalOpen3, setIsModalOpen3] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [content, setContent] = useState(<div></div>)
 
   const dispatch = useDispatch()
 
@@ -143,6 +152,7 @@ const Step1test = ({ setStep, isPageInit = false }) => {
           />
           <div
             style={{
+              marginTop: 15,
               flexBasis: '10px',
               textAlign: 'center',
               height: 2,
@@ -214,10 +224,63 @@ const Step1test = ({ setStep, isPageInit = false }) => {
               setIsModalOpen(true)
               setIsModalOpen2(false)
             }}
+            bogiFunc1={() => {
+              setIsModalOpen2(false)
+              setIsModalOpen3(true)
+              setContent(<Text1 />)
+            }}
+            bogiFunc2={() => {
+              setIsModalOpen2(false)
+              setIsModalOpen3(true)
+              setContent(<Text2 />)
+            }}
+            bogiFunc3={() => {
+              setIsModalOpen2(false)
+              setIsModalOpen3(true)
+              setContent(<Text3 />)
+            }}
+            bogiFunc4={() => {
+              setIsModalOpen2(false)
+              setIsModalOpen3(true)
+              setContent(<Text4 />)
+            }}
+            bogiFunc5={() => {
+              setIsModalOpen2(false)
+              setIsModalOpen3(true)
+              setContent(<Text5 />)
+            }}
+            bogiFunc6={() => {
+              setIsModalOpen2(false)
+              setIsModalOpen3(true)
+              setContent(<Text6 />)
+            }}
+            bogiFunc7={() => {
+              setIsModalOpen2(false)
+              setIsModalOpen3(true)
+              setContent(<Text7 />)
+            }}
+            bogiFunc8={() => {
+              setIsModalOpen2(false)
+              setIsModalOpen3(true)
+              setContent(<Text8 />)
+            }}
           />
         </Overlay>
       )}
-      {isModalOpen3 && <Overlay></Overlay>}
+      {isModalOpen3 && (
+        <Overlay>
+          <div
+            style={{ textAlign: 'left' }}
+            onClick={() => {
+              setIsModalOpen2(true)
+              setIsModalOpen3(false)
+            }}
+          >
+            <img src="/img/back.svg" alt="exit" height={20} width={20} />
+            {content}
+          </div>
+        </Overlay>
+      )}
     </MainSection>
   )
 }
@@ -244,8 +307,7 @@ const InputFsn = styled.input`
   letter-spacing: 2px;
 `
 const InputBsn = styled.input`
-  padding-top: 15px;
-  padding: 0 10%;
+  padding: 15px 10% 0 10%;
   border: none;
   box-sizing: border-box;
   width: 100%;
@@ -255,7 +317,8 @@ const InputBsn = styled.input`
   letter-spacing: 4px;
 `
 const InputTelcom = styled.select`
-  padding-top: 15px;
+  background-color: #fff;
+  margin-top: 15px;
   border: none;
   box-sizing: border-box;
   width: 100%;
