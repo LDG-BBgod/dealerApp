@@ -63,34 +63,19 @@ const Step3 = ({ setStep, isPageInit = false }) => {
   }
 
   const handleSelect1 = async (options) => {
-    return getCarInfo(
-      `http://${window.location.hostname}:5000/api/carInfo/option1`,
-      { options },
-    )
+    return getCarInfo(process.env.REACT_APP_OPTION1, { options })
   }
   const handleSelect2 = async (options) => {
-    return getCarInfo(
-      `http://${window.location.hostname}:5000/api/carInfo/option2`,
-      { options },
-    )
+    return getCarInfo(process.env.REACT_APP_OPTION2, { options })
   }
   const handleSelect3 = async (options) => {
-    return getCarInfo(
-      `http://${window.location.hostname}:5000/api/carInfo/option3`,
-      { options },
-    )
+    return getCarInfo(process.env.REACT_APP_OPTION3, { options })
   }
   const handleSelect4 = async (options) => {
-    return getCarInfo(
-      `http://${window.location.hostname}:5000/api/carInfo/option4`,
-      { options },
-    )
+    return getCarInfo(process.env.REACT_APP_OPTION4, { options })
   }
   const handleSelect5 = async (options) => {
-    return getCarInfo(
-      `http://${window.location.hostname}:5000/api/carInfo/option5`,
-      { options },
-    )
+    return getCarInfo(process.env.REACT_APP_OPTION5, { options })
   }
   const resetValue = (step) => {
     const reset = { text: '선택', id: '', state: false }
