@@ -22,12 +22,9 @@ const Compare = () => {
       try {
         setTimeout(async () => {
           await axios
-            .get(
-              `http://${window.location.hostname}:5000/api/compare/pageInit`,
-              {
-                timeout: 10000,
-              },
-            )
+            .get(process.env.REACT_APP_PAGEINIT, {
+              timeout: 10000,
+            })
             .then((res) => {
               if (!res.data.err) {
                 setIsPageInit(true)

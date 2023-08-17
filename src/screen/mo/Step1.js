@@ -84,13 +84,9 @@ const Step1test = ({ setStep, isPageInit = false }) => {
     }
     try {
       await axios
-        .post(
-          `http://${window.location.hostname}:5000/api/compare/phoneSubmit`,
-          body,
-          {
-            timeout: 10000,
-          },
-        )
+        .post(process.env.REACT_APP_PHONESUBMIT, body, {
+          timeout: 10000,
+        })
         .then((res) => {
           setIsLoading(false)
           if (!res.data.err) {

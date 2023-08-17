@@ -29,7 +29,7 @@ const Home = () => {
     try {
       const res = await axios
         .post(
-          `http://${window.location.hostname}:5000/api/apis/pwCheck`,
+          process.env.REACT_APP_PWCHECK,
           {
             value,
           },

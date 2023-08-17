@@ -18,7 +18,7 @@ function App() {
       const shutDown = async () => {
         try {
           await axios.post(
-            `http://${window.location.hostname}:5000/api/compare/shutdown`,
+            process.env.REACT_APP_SHUTDOWN,
           )
         } catch (error) {
           console.error('Failed to send server shutdown request:', error)

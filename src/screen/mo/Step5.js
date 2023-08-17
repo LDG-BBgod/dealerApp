@@ -79,13 +79,9 @@ const Step5 = ({ setStep, isPageInit = false }) => {
       }
       try {
         const res = axios
-          .post(
-            `http://${window.location.hostname}:5000/api/compare/sendSMS`,
-            body,
-            {
-              timeout: 10000,
-            },
-          )
+          .post(process.env.REACT_APP_SENDSMS, body, {
+            timeout: 10000,
+          })
           .then((res) => {
             setIsLoading(false)
             setIsModalOpen(false)
@@ -116,13 +112,9 @@ const Step5 = ({ setStep, isPageInit = false }) => {
       }
       try {
         const res = axios
-          .post(
-            `http://${window.location.hostname}:5000/api/compare/sendLink`,
-            body,
-            {
-              timeout: 10000,
-            },
-          )
+          .post(process.env.REACT_APP_SENDLINK, body, {
+            timeout: 10000,
+          })
           .then((res) => {
             setIsLoading(false)
             if (isOnline) {
@@ -412,4 +404,3 @@ const SubTitle = styled.div`
 
   color: #9f9f9f;
 `
-

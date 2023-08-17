@@ -211,13 +211,9 @@ const Step4 = ({ setStep, isPageInit = false }) => {
       const body = {}
       try {
         const res = await axios
-          .post(
-            `http://${window.location.hostname}:5000/api/compare/step4Back`,
-            body,
-            {
-              timeout: 10000,
-            },
-          )
+          .post(process.env.REACT_APP_STEP4BACK, body, {
+            timeout: 10000,
+          })
           .then((res) => {
             setIsLoading(false)
             if (!res.data.err) {
@@ -263,13 +259,9 @@ const Step4 = ({ setStep, isPageInit = false }) => {
       }
       try {
         const res = await axios
-          .post(
-            `http://${window.location.hostname}:5000/api/compare/getResult`,
-            body,
-            {
-              timeout: 30000,
-            },
-          )
+          .post(process.env.REACT_APP_GETRESULT, body, {
+            timeout: 30000,
+          })
           .then((res) => {
             setIsModalOpen(false)
             if (!res.data.err) {

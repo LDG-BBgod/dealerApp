@@ -37,13 +37,9 @@ const Step2 = ({ setStep, isPageInit = false }) => {
         authNum,
       }
       const res = await axios
-        .post(
-          `http://${window.location.hostname}:5000/api/compare/authCheck`,
-          body,
-          {
-            timeout: 10000,
-          },
-        )
+        .post(process.env.REACT_APP_AUTHCHECK, body, {
+          timeout: 10000,
+        })
         .then((res) => {
           setIsLoading(false)
           if (!res.data.err) {
@@ -126,7 +122,7 @@ const Step2 = ({ setStep, isPageInit = false }) => {
 export default Step2
 
 const InputAuth = styled.input`
-padding-top: 15px;
+  padding-top: 15px;
   border: none;
   box-sizing: border-box;
   width: 100%;

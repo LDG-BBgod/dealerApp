@@ -130,13 +130,9 @@ const Step3 = ({ setStep, isPageInit = false }) => {
     }
     try {
       axios
-        .post(
-          `http://${window.location.hostname}:5000/api/compare/selectCar`,
-          body,
-          {
-            timeout: 10000,
-          },
-        )
+        .post(process.env.REACT_APP_SELECTCAR, body, {
+          timeout: 10000,
+        })
         .then((res) => {
           if (!res.data.err) {
             if (res.data.msg.success) {
