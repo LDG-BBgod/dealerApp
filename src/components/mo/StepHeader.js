@@ -33,7 +33,7 @@ const StepHeader = ({ src }) => {
           justifyContent: 'space-between',
         }}
       >
-        <Text>대표 상담번호 044-715-7442</Text>
+        <Text>대표 상담번호 010-7770-2696</Text>
         <img
           src={src}
           alt="step"

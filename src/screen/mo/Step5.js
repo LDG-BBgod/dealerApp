@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { styled } from 'styled-components'
 import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 import MainSection from '../../components/mo/MainSection'
@@ -17,7 +18,10 @@ import CompanyLogo from '../../components/mo/CompanyLogo'
 
 const Step5 = ({ setStep, isPageInit = false }) => {
   const phoneNum = useSelector((state) => state.phone.phone)
-  const { dtype, isMobile } = useSelector((state) => state.dealer)
+  const { isMobile } = useSelector((state) => state.dealer)
+  const { search } = useLocation()
+  const queryParams = new URLSearchParams(search)
+  const dtype = queryParams.get('dtype')
   const { result } = useSelector((state) => state.resultData)
   const [resData, setResData] = useState([])
   const [callData, setCallData] = useState([])
@@ -171,6 +175,10 @@ const Step5 = ({ setStep, isPageInit = false }) => {
       setCallData(makeCallData(result))
     }
   }, [dtype, result])
+
+  // 뒤로가기 핸들링
+
+  useEffect(() => {}, [])
 
   return (
     <MainSection>

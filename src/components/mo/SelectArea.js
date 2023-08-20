@@ -14,22 +14,13 @@ const SelectArea = ({
   step = null,
   posible = false,
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(null)
   const [arrData, setArrData] = useState([])
-
-  const handleBack = (event) => {
-    console.log('뒤로~~~')
-    event.preventDefault()
-
-    setIsModalOpen(false)
-  }
 
   const handleSelect = async () => {
     if (posible) {
       let list = await selectFunc(options)
       setArrData(list)
-      console.log('모달오픈')
-      window.addEventListener('popstate', handleBack)
       setIsModalOpen(true)
     } else {
       alert('이전단계를 먼저 선택해주세요')
@@ -37,10 +28,21 @@ const SelectArea = ({
   }
   const handleOption = (text, id) => {
     optionFunc({ text, id, state: true })
-    console.log('모달클로즈')
-    window.removeEventListener('popstate', handleBack)
+    window.history.go(-1)
     setIsModalOpen(false)
   }
+  
+  // 뒤로가기 핸들링
+  useEffect(() => {
+    if (isModalOpen) {
+      window.history.pushState(null, '', '')
+      window.onpopstate = () => {
+        setIsModalOpen(false)
+      }
+    } else if (isModalOpen === false) {
+    }
+  }, [isModalOpen])
+
   return (
     <div>
       <Text>{text}</Text>

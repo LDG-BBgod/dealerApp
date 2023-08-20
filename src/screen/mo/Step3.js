@@ -149,6 +149,8 @@ const Step3 = ({ setStep, isPageInit = false }) => {
     }
   }, [carValue1, carValue2, carValue3, carValue4, carValue5])
 
+
+
   return (
     <MainSection>
       <StepHeader src={'/img/step3.svg'} />

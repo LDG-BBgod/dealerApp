@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { useDispatch, batch } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
-
-import { changeDType, changePID } from '../../actions/dealer'
 
 import MainSection from '../../components/mo/MainSection'
 import MobileHeader from '../../components/mo/MobileHeader'
@@ -14,12 +11,12 @@ import CompanyLogo from '../../components/mo/CompanyLogo'
 const Home = () => {
   const [value, setValue] = useState('')
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   const { search } = useLocation()
   const queryParams = new URLSearchParams(search)
-  const dtype = queryParams.get('dtype')
-  const pid = queryParams.get('pid')
+  const dtype =
+    queryParams.get('dtype') !== null ? queryParams.get('dtype') : 'B'
+  const pid = queryParams.get('pid') !== null ? queryParams.get('pid') : 'undef'
 
   const handleInput = (e) => {
     setValue(e.target.value)
@@ -39,11 +36,7 @@ const Home = () => {
         )
         .then((res) => {
           if (res.data) {
-            batch(() => {
-              dispatch(changeDType(dtype))
-              dispatch(changePID(pid))
-            })
-            navigate('/mo/compare')
+            navigate(`/mo/compare?dtype=${dtype}&pid=${pid}`)
           } else {
             alert('잘못된 비밀번호입니다')
           }

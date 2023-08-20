@@ -24,7 +24,7 @@ const MobileHeader = () => {
         alt="logo"
         style={{ width: 53, height: 40 }}
       />
-      <Text>대표 상담번호 044-715-7442</Text>
+      <Text>대표 상담번호 010-7770-2696</Text>
     </MainHeader>
   )
 }
