@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Beforeunload, useBeforeunload } from 'react-beforeunload'
+import { useBeforeunload } from 'react-beforeunload'
 import axios from 'axios'
 
 import Step1 from './Step1'
@@ -17,9 +17,9 @@ const Compare = () => {
 
   const StepComponent = steps[step - 1]
 
-  // useBeforeunload((e) => {
-  //   e.preventDefault()
-  // })
+  useBeforeunload((e) => {
+    e.preventDefault()
+  })
 
   useEffect(() => {
     const initPage = async () => {
@@ -44,7 +44,7 @@ const Compare = () => {
       }
 
       // // 화면디자인할때 사용
-      // setStep(5)
+      // setStep(1)
       // 화면디자인할때 사용
     }
     initPage()
@@ -56,7 +56,6 @@ const Compare = () => {
   return (
     <div>
       <StepComponent setStep={setStep} isPageInit={isPageInit} />
-      <Beforeunload onBeforeunload={() => 'You’ll lose your data!'} />
     </div>
   )
 }

@@ -24,7 +24,13 @@ const MobileHeader = () => {
         alt="logo"
         style={{ width: 53, height: 40 }}
       />
-      <Text>대표 상담번호 010-7770-2696</Text>
+      <Text
+        onClick={() => {
+          window.location.href = `tel:010-7770-2696`
+        }}
+      >
+        대표 상담번호 010-7770-2696
+      </Text>
     </MainHeader>
   )
 }

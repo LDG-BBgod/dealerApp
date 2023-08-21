@@ -101,10 +101,10 @@ const Step4 = ({ setStep, isPageInit = false }) => {
   const handleSelectLevel = (op) => {
     return [
       { nm: '의무 보험', cd: 'level1' },
-      { nm: '자차없는 종찹보험(보통 보장)', cd: 'level2m' },
-      { nm: '자차없는 종찹보험(높은 보장)', cd: 'level2h' },
-      { nm: '자차포함 종찹보험(보통 보장)', cd: 'level3m' },
-      { nm: '자차포함 종찹보험(높은 보장)', cd: 'level3h' },
+      { nm: '자차없는 종합보험(보통 보장)', cd: 'level2m' },
+      { nm: '자차없는 종합보험(높은 보장)', cd: 'level2h' },
+      { nm: '자차포함 종합보험(보통 보장)', cd: 'level3m' },
+      { nm: '자차포함 종합보험(높은 보장)', cd: 'level3h' },
       { nm: '직접 입력', cd: 'level4' },
     ]
   }
@@ -243,47 +243,64 @@ const Step4 = ({ setStep, isPageInit = false }) => {
 
   useEffect(() => {
     const handleButtonSubmit = async () => {
-      const body = {
-        range: range.id,
-        minBirth: minBirth,
-        secondBirth: secondBirth,
-        level: level.id,
-        option1: option1.id,
-        option2: option2.id,
-        option3: option3.id,
-        option4: option4.id,
-        option5: option5.id,
-        option6: option6.id,
-        option7: option7.id,
-        option8: option8.id,
+      const regex = /^(19|20)\d\d(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/
+      const minBirthCheck = regex.test(minBirth)
+      let secondBirthCheck = false
+      if (range.id === 'famradio04' || range.id === 'famradio02') {
+        secondBirthCheck = regex.test(secondBirth)
+      } else {
+        secondBirthCheck = true
       }
-      try {
-        const res = await axios
-          .post(process.env.REACT_APP_GETRESULT, body, {
-            timeout: 30000,
-          })
-          .then((res) => {
-            setIsModalOpen(false)
-            if (!res.data.err) {
-              if (res.data.msg.success) {
-                dispatch(setResult(res.data.msg.text))
-                setStep(5)
+      console.log(minBirthCheck && secondBirthCheck)
+      if (minBirthCheck && secondBirthCheck) {
+        const body = {
+          range: range.id,
+          minBirth: minBirth,
+          secondBirth: secondBirth,
+          level: level.id,
+          option1: option1.id,
+          option2: option2.id,
+          option3: option3.id,
+          option4: option4.id,
+          option5: option5.id,
+          option6: option6.id,
+          option7: option7.id,
+          option8: option8.id,
+        }
+        try {
+          const res = await axios
+            .post(process.env.REACT_APP_GETRESULT, body, {
+              timeout: 30000,
+            })
+            .then((res) => {
+              setIsModalOpen(false)
+              if (!res.data.err) {
+                if (res.data.msg.success) {
+                  dispatch(setResult(res.data.msg.text))
+                  setStep(5)
+                } else {
+                  alert(res.data.msg.text)
+                }
               } else {
-                alert(res.data.msg.text)
+                alert('전산프로그램에 오류가 발생하였습니다.')
+                window.location.reload()
               }
-            } else {
-              alert('전산프로그램에 오류가 발생하였습니다.')
-              window.location.reload()
-            }
-          })
-      } catch (err) {
-        setIsModalOpen(false)
-        alert('전산프로그램에 오류가 발생하였습니다.')
-        window.location.reload()
+            })
+        } catch (err) {
+          setIsModalOpen(false)
+          alert('전산프로그램에 오류가 발생하였습니다.')
+          window.location.reload()
+        }
+      } else {
+        setIsClickedNext(false)
+        alert('생년월일 입력을 다시한번 확인해주세요. ex)19960101')
       }
     }
+
     if (isClickedNext) {
       setIsModalOpen(true)
+    } else {
+      setIsModalOpen(false)
     }
     if (isSelected && isClickedNext) {
       handleButtonSubmit()
@@ -308,15 +325,14 @@ const Step4 = ({ setStep, isPageInit = false }) => {
   ])
 
   useEffect(() => {
-    const regex = /^(19|20)\d\d(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/
-    const minBirthCheck = regex.test(minBirth)
-    let secondBirthCheck = false
-    let levelCehck = level.state
+    const minBirthCheck = minBirth === '' ? false : true
+    let secondBirthCheck = true
     if (range.id === 'famradio04' || range.id === 'famradio02') {
-      secondBirthCheck = regex.test(secondBirth)
-    } else {
-      secondBirthCheck = true
+      secondBirthCheck = secondBirth === '' ? false : true
     }
+
+    let levelCehck = level.state
+
     if (level.id === 'level4') {
       levelCehck =
         option1.state &&
