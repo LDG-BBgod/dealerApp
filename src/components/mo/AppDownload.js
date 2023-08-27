@@ -32,6 +32,10 @@ const AppDownload = () => {
     } else if (window.matchMedia('(display-mode: standalone)').matches) {
       alert('이미 바탕화면에 추가되어 있습니다.')
     } else {
+      const currentPageUrl = window.location.href
+      const newStartUrl = `/dynamic?url=${encodeURIComponent(currentPageUrl)}`
+      document.querySelector('link[rel="manifest"]').href =
+        '/path/to/manifest.json'
       installApp()
     }
   }
