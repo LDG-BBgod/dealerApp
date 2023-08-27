@@ -1,20 +1,48 @@
 import { styled } from 'styled-components'
-
+import { useEffect, useState } from 'react'
 import Spacer from './Spacer'
 
 const AppDownload = () => {
-  const handleButton = () => {
-    if (window.navigator && window.navigator['standalone']) {
-      // iOS Safari에서는 standalone 속성이 존재
-      alert('이미 바탕화면에 추가되어 있습니다.')
-    } else if (window.matchMedia('(display-mode: standalone)').matches) {
-      // Chrome 브라우저에서는 display-mode를 확인
-      alert('이미 바탕화면에 추가되어 있습니다.')
-    } else {
-      // 설치하기 위한 UI 보여주기 등의 작업
-      alert('바탕화면에 추가하려면 메뉴에서 "홈 화면에 추가"를 선택하세요.')
+  const [deferredPrompt, setDeferredPrompt] = useState(null)
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+    }
+    window.addEventListener('beforeinstallprompt', handler)
+  }, [])
+
+  const installApp = () => {
+    // Check if the deferredPrompt is available
+    if (deferredPrompt) {
+      // Show a custom UI to prompt the user to install the app
+      deferredPrompt.prompt()
+
+      // Wait for the user to respond to the prompt
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt')
+        } else {
+          console.log('User dismissed the A2HS prompt')
+        }
+
+        // Reset the deferredPrompt variable
+        setDeferredPrompt(null)
+      })
     }
   }
+
+  const handleButton = () => {
+    if (window.navigator && window.navigator['standalone']) {
+      alert('이미 바탕화면에 추가되어 있습니다.')
+    } else if (window.matchMedia('(display-mode: standalone)').matches) {
+      alert('이미 바탕화면에 추가되어 있습니다.')
+    } else {
+      installApp()
+    }
+  }
+
   return (
     <Box onClick={handleButton}>
       <img src="/img/buttonLogo.svg" alt="logo" width={20} height={20} />
