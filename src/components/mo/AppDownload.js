@@ -35,7 +35,7 @@ const AppDownload = () => {
       const currentPageUrl = window.location.href
       const newStartUrl = `/dynamic?url=${encodeURIComponent(currentPageUrl)}`
       document.querySelector('link[rel="manifest"]').href =
-        '/path/to/manifest.json'
+        '/manifest.json'
       installApp()
     }
   }
