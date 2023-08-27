@@ -19,7 +19,17 @@
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-
+    <script>
+      (function () {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("/sw.js").then((e)=>{
+            console.log('됨')
+          }).catch((e)=>{
+            console.log('안됨')
+          });
+        }
+      })();
+    </script>
     <title>CABO</title>
   </head>
   <body>
