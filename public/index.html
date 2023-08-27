@@ -22,11 +22,9 @@
     <script>
       (function () {
         if ("serviceWorker" in navigator) {
-          navigator.serviceWorker.register("/sw.js").then((e)=>{
-            console.log('됨')
-          }).catch((e)=>{
-            console.log('안됨')
-          });
+          navigator.serviceWorker.register("/sw.js").catch((e)=>{
+            console.log('')
+          })
         }
       })();
     </script>
