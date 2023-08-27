@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import axios from 'axios'
 
@@ -14,7 +15,9 @@ import Loading from '../../components/mo/Loading'
 import Overlay from '../../components/mo/Overlay'
 import SelectArea from '../../components/mo/SelectArea'
 
-const Step4 = ({ setStep, isPageInit = false }) => {
+const Step4 = ({ setStep }) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { jumin } = useSelector((state) => state.jumin)
   const [isComplete, setIsComplete] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -73,7 +76,7 @@ const Step4 = ({ setStep, isPageInit = false }) => {
     id: '',
     state: false,
   })
-  const dispatch = useDispatch()
+
   const isSelected = useSelector((state) => state.carSelectComplete.isComplete)
 
   const handleSelectRange = (op) => {
@@ -209,29 +212,33 @@ const Step4 = ({ setStep, isPageInit = false }) => {
   useEffect(() => {
     const handleButtonPrev = async () => {
       const body = {}
-      try {
-        const res = await axios
-          .post(process.env.REACT_APP_STEP4BACK, body, {
-            timeout: 10000,
-          })
-          .then((res) => {
-            setIsLoading(false)
-            if (!res.data.err) {
-              if (res.data.msg.success) {
-                setStep(3)
-              } else {
-                alert(res.data.msg.text)
-              }
+
+      const res = await axios
+        .post(process.env.REACT_APP_STEP4BACK, body, {
+          timeout: 10000,
+        })
+        .then((res) => {
+          setIsLoading(false)
+          if (!res.data.err) {
+            if (res.data.msg.success) {
+              setStep(3)
             } else {
-              alert('전산프로그램에 오류가 발생하였습니다.')
-              window.location.reload()
+              alert(res.data.msg.text)
             }
-          })
-      } catch (err) {
-        setIsLoading(false)
-        alert('전산프로그램에 오류가 발생하였습니다.')
-        window.location.reload()
-      }
+          } else {
+            // [0006]
+            alert(
+              '이전페이지를 불러오는도중 오류가 발생하였습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
+            )
+            setStep(1)
+          }
+        })
+        .catch((err) => {
+          alert(
+            `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+          )
+          navigate(`/mo/error`)
+        })
     }
     if (isClickedPrev) {
       setIsLoading(true)
@@ -239,7 +246,7 @@ const Step4 = ({ setStep, isPageInit = false }) => {
     if (isSelected && isClickedPrev) {
       handleButtonPrev()
     }
-  }, [isSelected, isClickedPrev, setStep])
+  }, [isSelected, isClickedPrev, setStep, navigate])
 
   useEffect(() => {
     const handleButtonSubmit = async () => {
@@ -251,7 +258,6 @@ const Step4 = ({ setStep, isPageInit = false }) => {
       } else {
         secondBirthCheck = true
       }
-      console.log(minBirthCheck && secondBirthCheck)
       if (minBirthCheck && secondBirthCheck) {
         const body = {
           range: range.id,
@@ -267,30 +273,34 @@ const Step4 = ({ setStep, isPageInit = false }) => {
           option7: option7.id,
           option8: option8.id,
         }
-        try {
-          const res = await axios
-            .post(process.env.REACT_APP_GETRESULT, body, {
-              timeout: 30000,
-            })
-            .then((res) => {
-              setIsModalOpen(false)
-              if (!res.data.err) {
-                if (res.data.msg.success) {
-                  dispatch(setResult(res.data.msg.text))
-                  setStep(5)
-                } else {
-                  alert(res.data.msg.text)
-                }
+
+        const res = await axios
+          .post(process.env.REACT_APP_GETRESULT, body, {
+            timeout: 30000,
+          })
+          .then((res) => {
+            setIsModalOpen(false)
+            if (!res.data.err) {
+              if (res.data.msg.success) {
+                dispatch(setResult(res.data.msg.text))
+                setStep(5)
               } else {
-                alert('전산프로그램에 오류가 발생하였습니다.')
-                window.location.reload()
+                alert(res.data.msg.text)
               }
-            })
-        } catch (err) {
-          setIsModalOpen(false)
-          alert('전산프로그램에 오류가 발생하였습니다.')
-          window.location.reload()
-        }
+            } else {
+              // [0005]
+              alert(
+                '보험가입정보 선택도중 오류가 발생하였습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
+              )
+              setStep(1)
+            }
+          })
+          .catch((err) => {
+            alert(
+              `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+            )
+            navigate(`/mo/error`)
+          })
       } else {
         setIsClickedNext(false)
         alert('생년월일 입력을 다시한번 확인해주세요. ex)19960101')
@@ -322,6 +332,7 @@ const Step4 = ({ setStep, isPageInit = false }) => {
     option7,
     option8,
     dispatch,
+    navigate,
   ])
 
   useEffect(() => {
@@ -502,7 +513,6 @@ const Step4 = ({ setStep, isPageInit = false }) => {
           }}
           text={'이전'}
           completed={false}
-          // nonCompletedButtonFunc={handleButtonPrev}
           nonCompletedButtonFunc={() => {
             setIsClickedPrev(true)
           }}

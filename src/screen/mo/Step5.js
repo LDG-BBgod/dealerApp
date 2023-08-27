@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { styled } from 'styled-components'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import MainSection from '../../components/mo/MainSection'
@@ -16,7 +16,8 @@ import StepButton from '../../components/mo/StepButton'
 import InputArea from '../../components/mo/InputArea'
 import CompanyLogo from '../../components/mo/CompanyLogo'
 
-const Step5 = ({ setStep, isPageInit = false }) => {
+const Step5 = ({ setStep }) => {
+  const navigate = useNavigate()
   const phoneNum = useSelector((state) => state.phone.phone)
   const { isMobile } = useSelector((state) => state.dealer)
   const { search } = useLocation()
@@ -81,26 +82,27 @@ const Step5 = ({ setStep, isPageInit = false }) => {
         selectedList,
         isOnline,
       }
-      try {
-        const res = axios
-          .post(process.env.REACT_APP_SENDSMS, body, {
-            timeout: 10000,
-          })
-          .then((res) => {
-            setIsLoading(false)
-            setIsModalOpen(false)
-            alert('문자 전송이 완료되었습니다.')
-          })
-      } catch (err) {
-        alert('전산프로그램에 오류가 발생하였습니다.')
-        window.location.reload()
-      }
+      await axios
+        .post(process.env.REACT_APP_SENDSMS, body, {
+          timeout: 10000,
+        })
+        .then((res) => {
+          alert('문자 전송이 완료되었습니다.')
+        })
+        .catch((err) => {
+          alert(
+            `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+          )
+          navigate(`/mo/error`)
+        })
+      setIsLoading(false)
+      setIsModalOpen(false)
     } else {
       alert('올바른 전화번호를 입력해 주세요.')
     }
   }
 
-  const handelGoLink = () => {
+  const handelGoLink = async () => {
     if (countTrueValues(companyIsSelected) === 1) {
       setIsLoading(true)
       const selectedListKeys = Object.keys(companyIsSelected).filter(
@@ -114,28 +116,30 @@ const Step5 = ({ setStep, isPageInit = false }) => {
         isOnline,
         isMobile,
       }
-      try {
-        const res = axios
-          .post(process.env.REACT_APP_SENDLINK, body, {
-            timeout: 10000,
-          })
-          .then((res) => {
-            setIsLoading(false)
-            if (isOnline) {
-              window.location.href = res.data
+
+      await axios
+        .post(process.env.REACT_APP_SENDLINK, body, {
+          timeout: 10000,
+        })
+        .then((res) => {
+          if (isOnline) {
+            window.location.href = res.data
+          } else {
+            if (isMobile) {
+              window.location.href = `tel:${res.data}`
             } else {
-              if (isMobile) {
-                window.location.href = `tel:${res.data}`
-              } else {
-                setResTelNum(res.data)
-                setIsModalOpen2(true)
-              }
+              setResTelNum(res.data)
+              setIsModalOpen2(true)
             }
-          })
-      } catch (err) {
-        alert('전산프로그램에 오류가 발생하였습니다.')
-        window.location.reload()
-      }
+          }
+        })
+        .catch((err) => {
+          alert(
+            `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+          )
+          navigate(`/mo/error`)
+        })
+      setIsLoading(false)
     } else {
       alert('1개만 선택해주세요.')
     }

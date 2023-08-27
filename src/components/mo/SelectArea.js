@@ -28,20 +28,11 @@ const SelectArea = ({
   }
   const handleOption = (text, id) => {
     optionFunc({ text, id, state: true })
-    window.history.go(-1)
     setIsModalOpen(false)
   }
-  
+
   // 뒤로가기 핸들링
-  useEffect(() => {
-    if (isModalOpen) {
-      window.history.pushState(null, '', '')
-      window.onpopstate = () => {
-        setIsModalOpen(false)
-      }
-    } else if (isModalOpen === false) {
-    }
-  }, [isModalOpen])
+
 
   return (
     <div>
@@ -58,7 +49,14 @@ const SelectArea = ({
         {boxText}
       </Box>
       {isModalOpen && (
-        <Overlay>
+        <Overlay onClose={() => setIsModalOpen(false)}>
+          <img
+            src="/img/back.svg"
+            alt="logo"
+            style={{ width: 15, height: 15 }}
+            onClick={()=>{setIsModalOpen(false)}}
+          />
+          <Spacer space={15} />
           {arrData.map((item, index) => (
             <ListBox key={index}>
               <List

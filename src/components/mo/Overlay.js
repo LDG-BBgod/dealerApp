@@ -1,16 +1,23 @@
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 
-function Overlay({ children }) {
+function Overlay({ children, onClose = null }) {
   const { isMobile } = useSelector((state) => state.dealer)
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose()
+    }
+  }
+
   return (
     <div>
       {isMobile ? (
-        <ModalContainer>
+        <ModalContainer onClick={handleOverlayClick}>
           <ModalContent>{children}</ModalContent>
         </ModalContainer>
       ) : (
-        <ModalContainer>
+        <ModalContainer onClick={handleOverlayClick}>
           <ModalContent2>{children}</ModalContent2>
         </ModalContainer>
       )}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { styled } from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 
 import axios from 'axios'
 
@@ -11,7 +12,8 @@ import StepButton from '../../components/mo/StepButton'
 import InputArea from '../../components/mo/InputArea'
 import Loading from '../../components/mo/Loading'
 
-const Step2 = ({ setStep, isPageInit = false }) => {
+const Step2 = ({ setStep }) => {
+  const navigate = useNavigate()
   const [authNum, setAuthNum] = useState('')
   const [isComplete, setIsComplete] = useState(false)
   const [countdown, setCountdown] = useState(179) // 3분 - 1초
@@ -32,32 +34,44 @@ const Step2 = ({ setStep, isPageInit = false }) => {
   }
   const handleButtonSubmit = async () => {
     setIsLoading(true)
-    try {
-      const body = {
-        authNum,
-      }
-      const res = await axios
-        .post(process.env.REACT_APP_AUTHCHECK, body, {
-          timeout: 10000,
-        })
-        .then((res) => {
-          setIsLoading(false)
-          if (!res.data.err) {
-            if (res.data.msg.success) {
-              setStep(3)
+
+    const body = {
+      authNum,
+    }
+    const res = await axios
+      .post(process.env.REACT_APP_AUTHCHECK, body, {
+        timeout: 10000,
+      })
+      .then((res) => {
+        setIsLoading(false)
+        if (!res.data.err) {
+          if (res.data.msg.success) {
+            setStep(3)
+          } else {
+            if (res.data.msg.text === '3년') {
+              alert(
+                '고객님은 현재 계약해지 시점과 신규 가입시점의 공백이 3년 이내의 계약자로서 카보를 통한 보험료 계산이 불가합니다. 회사를 통해 문의하여 주시기 바랍니다.',
+              )
+              setStep(1)
             } else {
               alert('인증번호 6자리를 다시 확인해주세요.')
             }
-          } else {
-            alert('전산프로그램에 오류가 발생하였습니다.')
-            window.location.reload()
           }
-        })
-    } catch (err) {
-      setIsLoading(false)
-      alert('전산프로그램에 오류가 발생하였습니다.')
-      window.location.reload()
-    }
+        } else {
+          // [0003]
+          alert(
+            '인증번호 확인도중 오류가 발생했습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
+          )
+          setStep(1)
+        }
+      })
+      .catch((err) => {
+        alert(
+          `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+        )
+        navigate(`/mo/error`)
+      })
+    setIsLoading(false)
   }
 
   useEffect(() => {

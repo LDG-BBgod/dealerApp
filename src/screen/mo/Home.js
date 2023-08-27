@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import axios from 'axios'
+
+import {changeIsLogin} from '../../actions/dealer'
 
 import MainSection from '../../components/mo/MainSection'
 import MobileHeader from '../../components/mo/MobileHeader'
 import Spacer from '../../components/mo/Spacer'
 import CompanyLogo from '../../components/mo/CompanyLogo'
+import AppDownload from '../../components/mo/AppDownload'
+import Loading from '../../components/mo/Loading'
 
 const Home = () => {
-  const [value, setValue] = useState('')
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(false)
+  const [value, setValue] = useState('')
 
   const { search } = useLocation()
   const queryParams = new URLSearchParams(search)
@@ -23,27 +30,32 @@ const Home = () => {
   }
 
   const handleButton = async () => {
-    try {
-      const res = await axios
-        .post(
-          process.env.REACT_APP_PWCHECK,
-          {
-            value,
-          },
-          {
-            timeout: 10000,
-          },
+    setIsLoading(true)
+    const res = await axios
+      .post(
+        process.env.REACT_APP_PWCHECK,
+        {
+          value,
+        },
+        {
+          timeout: 10000,
+        },
+      )
+      .then((res) => {
+        if (res.data) {
+          dispatch(changeIsLogin(true))
+          navigate(`/mo/compare?dtype=${dtype}&pid=${pid}`)
+        } else {
+          alert('잘못된 비밀번호입니다')
+        }
+      })
+      .catch((res) => {
+        alert(
+          `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
         )
-        .then((res) => {
-          if (res.data) {
-            navigate(`/mo/compare?dtype=${dtype}&pid=${pid}`)
-          } else {
-            alert('잘못된 비밀번호입니다')
-          }
-        })
-    } catch (err) {
-      console.log('에러 1')
-    }
+        navigate(`/mo/error`)
+      })
+    setIsLoading(false)
   }
 
   return (
@@ -61,6 +73,11 @@ const Home = () => {
         >
           딜러 전용 다이렉트 보험료 비교
         </span>
+        <Spacer space={20} />
+        <div style={{ marginLeft: 'auto' }}>
+          <AppDownload />
+        </div>
+
         <Spacer space={50} />
         <img
           src="/img/home_img.svg"
@@ -102,6 +119,7 @@ const Home = () => {
         <Spacer space={10} />
         <CompanyLogo src={'/img/hanhwa.svg'} />
         <Spacer space={50} />
+        {isLoading && <Loading />}
       </MainSection>
     </Backgroud>
   )

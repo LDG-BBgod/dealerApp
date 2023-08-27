@@ -1,6 +1,7 @@
 import { styled } from 'styled-components'
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import { setPhone as setPhoneNum } from '../../actions/phone'
@@ -25,7 +26,13 @@ import Text6 from '../text6'
 import Text7 from '../text7'
 import Text8 from '../text8'
 
-const Step1test = ({ setStep, isPageInit = false }) => {
+const Step1test = ({ setStep }) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const fsnInputRef = useRef(null)
+  const bsnInputRef = useRef(null)
+  const { isLogin } = useSelector((state) => state.dealer)
+  const [isPageInit, setIsPageInit] = useState(false)
   const [name, setName] = useState('') //초기 ''
   const [fsn, setFsn] = useState('') //초기 ''
   const [bsn, setBsn] = useState('') //초기 ''
@@ -38,8 +45,6 @@ const Step1test = ({ setStep, isPageInit = false }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [content, setContent] = useState(<div></div>)
 
-  const dispatch = useDispatch()
-
   const handleName = (e) => {
     setName(e.target.value)
   }
@@ -47,6 +52,9 @@ const Step1test = ({ setStep, isPageInit = false }) => {
     const inputFsn = e.target.value.replace(/\D/g, '') // 숫자 외의 문자 제거
     if (inputFsn.length <= 6) {
       setFsn(inputFsn)
+    }
+    if (inputFsn.length === 6) {
+      bsnInputRef.current.focus()
     }
   }
   const handleBsn = (e) => {
@@ -82,31 +90,33 @@ const Step1test = ({ setStep, isPageInit = false }) => {
       telcom,
       phone,
     }
-    try {
-      await axios
-        .post(process.env.REACT_APP_PHONESUBMIT, body, {
-          timeout: 10000,
-        })
-        .then((res) => {
-          setIsLoading(false)
-          if (!res.data.err) {
-            if (res.data.msg.success) {
-              dispatch(setPhoneNum(phone))
-              dispatch(setJumin(fsn))
-              setStep(2)
-            } else {
-              alert('조회불가, 고객정보를 다시한번 확인해주세요.')
-            }
+    await axios
+      .post(process.env.REACT_APP_PHONESUBMIT, body, {
+        timeout: 10000,
+      })
+      .then((res) => {
+        if (!res.data.err) {
+          if (res.data.msg.success) {
+            dispatch(setPhoneNum(phone))
+            dispatch(setJumin(fsn))
+            setStep(2)
           } else {
-            alert('전산프로그램에 오류가 발생하였습니다.')
-            window.location.reload()
+            alert('조회불가, 고객정보를 다시한번 확인해주세요.')
           }
-        })
-    } catch (err) {
-      setIsLoading(false)
-      alert('전산프로그램에 오류가 발생하였습니다.')
-      window.location.reload()
-    }
+        } else {
+          // [0002]
+          alert(
+            '인증번호 요청에 실패하였습니다. \n페이지를 새로고침해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
+          )
+        }
+      })
+      .catch((err) => {
+        alert(
+          `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+        )
+        navigate(`/mo/error`)
+      })
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -119,6 +129,48 @@ const Step1test = ({ setStep, isPageInit = false }) => {
     }
     checkInput()
   }, [name, fsn, bsn, telcom, phone])
+
+  // 셧다운
+  useEffect(() => {
+    const shutDown = async () => {
+      await axios.post(process.env.REACT_APP_SHUTDOWN).catch((err) => {})
+    }
+    shutDown()
+  }, [])
+
+  // 페이지 인잇
+  useEffect(() => {
+    if (!isLogin) {
+      navigate(`/mo`)
+    } else {
+      const initPage = async () => {
+        setTimeout(async () => {
+          await axios
+            .get(process.env.REACT_APP_PAGEINIT, {
+              timeout: 15000,
+            })
+            .then((res) => {
+              const isErr = res.data.err
+              if (!isErr) {
+                setIsPageInit(true)
+              } else {
+                // [0001]
+                alert(
+                  '페이지 준비도중 오류가 발생하였습니다. \n페이지를 새로고침해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
+                )
+              }
+            })
+            .catch((err) => {
+              alert(
+                `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+              )
+              navigate(`/mo/error`)
+            })
+        }, 1000)
+      }
+      initPage()
+    }
+  }, [navigate, isLogin])
 
   return (
     <MainSection>
@@ -145,6 +197,7 @@ const Step1test = ({ setStep, isPageInit = false }) => {
             onChange={handleFsn}
             style={{ flexBasis: '50%' }}
             autoComplete="one-time-code"
+            ref={fsnInputRef}
           />
           <div
             style={{
@@ -161,6 +214,7 @@ const Step1test = ({ setStep, isPageInit = false }) => {
             onChange={handleBsn}
             style={{ flexBasis: '50%' }}
             autoComplete="one-time-code"
+            ref={bsnInputRef}
           />
         </SnBox>
       </InputArea>

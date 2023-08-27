@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import { carSeleting, carSeleted } from '../../actions/carSelectComplete'
@@ -12,7 +13,9 @@ import StepButton from '../../components/mo/StepButton'
 import Loading from '../../components/mo/Loading'
 import SelectArea from '../../components/mo/SelectArea'
 
-const Step3 = ({ setStep, isPageInit = false }) => {
+const Step3 = ({ setStep }) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [isComplete, setIsComplete] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [carValue1, setCarValue1] = useState({
@@ -41,23 +44,25 @@ const Step3 = ({ setStep, isPageInit = false }) => {
     state: false,
   })
 
-  const dispatch = useDispatch()
+
 
   const getCarInfo = async (url, body) => {
     let returnData = null
     setIsLoading(true)
-    try {
-      await axios
-        .post(url, body, {
-          timeout: 10000,
-        })
-        .then((res) => {
-          returnData = res.data
-        })
-    } catch (err) {
-      alert('전산프로그램에 오류가 발생하였습니다.')
-      window.location.reload()
-    }
+
+    await axios
+      .post(url, body, {
+        timeout: 5000,
+      })
+      .then((res) => {
+        returnData = res.data
+      })
+      .catch((err) => {
+        alert(
+          `차량정보 조회에 오류가 발생하였습니다. 잠시후 다시 시도해주세요.`,
+        )
+      })
+
     setIsLoading(false)
     return returnData
   }
@@ -113,26 +118,31 @@ const Step3 = ({ setStep, isPageInit = false }) => {
       carValue4: carValue4.id,
       carValue5: carValue5.id,
     }
-    try {
-      axios
-        .post(process.env.REACT_APP_SELECTCAR, body, {
-          timeout: 10000,
-        })
-        .then((res) => {
-          if (!res.data.err) {
-            if (res.data.msg.success) {
-              dispatch(carSeleted())
-            }
-          } else {
-            alert('전산프로그램에 오류가 발생하였습니다.')
-            window.location.reload()
+
+    axios
+      .post(process.env.REACT_APP_SELECTCAR, body, {
+        timeout: 15000,
+      })
+      .then((res) => {
+        if (!res.data.err) {
+          if (res.data.msg.success) {
+            dispatch(carSeleted())
           }
-        })
-      setStep(4)
-    } catch (err) {
-      alert('전산프로그램에 오류가 발생하였습니다.')
-      window.location.reload()
-    }
+        } else {
+          // [0004]
+          alert(
+            '차량 선택도중 오류가 발생했습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
+          )
+          setStep(1)
+        }
+      })
+      .catch((err) => {
+        alert(
+          `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+        )
+        navigate(`/mo/error`)
+      })
+    setStep(4)
   }
 
   useEffect(() => {
@@ -148,8 +158,6 @@ const Step3 = ({ setStep, isPageInit = false }) => {
       setIsComplete(false)
     }
   }, [carValue1, carValue2, carValue3, carValue4, carValue5])
-
-
 
   return (
     <MainSection>

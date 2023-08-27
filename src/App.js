@@ -9,18 +9,17 @@ import { changeIsMobile } from './actions/dealer'
 import Home from './screen/mo/Home'
 import Root from './screen/mo/Root'
 import Compare from './screen/mo/Compare'
+import ErrorPage from './screen/mo/ErrorPage'
+
 
 function App() {
   const location = useLocation()
   const dispatch = useDispatch()
+
   useEffect(() => {
     if (location.pathname !== '/mo/compare') {
       const shutDown = async () => {
-        try {
-          await axios.post(process.env.REACT_APP_SHUTDOWN)
-        } catch (error) {
-          console.error('Failed to send server shutdown request:', error)
-        }
+        await axios.post(process.env.REACT_APP_SHUTDOWN).catch((err) => {})
       }
       shutDown()
     }
@@ -36,6 +35,7 @@ function App() {
         <Route path="/" Component={Root} />
         <Route path="/mo" Component={Home} />
         <Route path="/mo/compare" Component={Compare} />
+        <Route path="/mo/error" Component={ErrorPage} />
       </Routes>
     </div>
   )
