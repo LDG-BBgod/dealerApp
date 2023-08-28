@@ -10,9 +10,9 @@ const AppDownload = () => {
       event.preventDefault()
       setDeferredPrompt(event)
     })
-  }, [deferredPrompt])
+  }, [])
 
-  const installApp = async () => {
+  const installApp = () => {
     // const dynamicManifest = {
     //   name: 'CABO',
     //   short_name: 'CABO',
