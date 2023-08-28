@@ -9,8 +9,15 @@ const AppDownload = () => {
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault()
       setDeferredPrompt(event)
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt')
+        } else {
+          console.log('User dismissed the A2HS prompt')
+        }
+      })
     })
-  }, [])
+  }, [deferredPrompt])
 
   const installApp = async () => {
     if (deferredPrompt) {
@@ -49,13 +56,6 @@ const AppDownload = () => {
       document.head.appendChild(link)
 
       deferredPrompt.prompt()
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt')
-        } else {
-          console.log('User dismissed the A2HS prompt')
-        }
-      })
     }
   }
 
