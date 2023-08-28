@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 
-import {changeIsLogin} from '../../actions/dealer'
+import { changeIsLogin } from '../../actions/dealer'
 
 import MainSection from '../../components/mo/MainSection'
 import MobileHeader from '../../components/mo/MobileHeader'
@@ -24,6 +24,8 @@ const Home = () => {
   const dtype =
     queryParams.get('dtype') !== null ? queryParams.get('dtype') : 'B'
   const pid = queryParams.get('pid') !== null ? queryParams.get('pid') : 'undef'
+
+  const [test, setTest] = useState(dtype)
 
   const handleInput = (e) => {
     setValue(e.target.value)
@@ -61,6 +63,7 @@ const Home = () => {
   return (
     <Backgroud>
       <MainSection>
+        <div>{test}</div>
         <MobileHeader />
         <Spacer space={50} />
         <span
