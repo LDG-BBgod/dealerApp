@@ -5,43 +5,6 @@ import Spacer from './Spacer'
 const AppDownload = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   alert(deferredPrompt)
-
-  useEffect(() => {
-    const dynamicManifest = {
-      name: 'CABO',
-      short_name: 'CABO',
-      icons: [
-        {
-          src: 'favicon.ico',
-          sizes: '64x64 32x32 24x24 16x16',
-          type: 'image/x-icon',
-        },
-        {
-          src: 'logo192.png',
-          type: 'image/png',
-          sizes: '192x192',
-        },
-        {
-          src: 'logo512.png',
-          type: 'image/png',
-          sizes: '512x512',
-        },
-      ],
-      start_url: window.location.pathname,
-      display: 'standalone',
-      background_color: '#5b8def',
-      theme_color: '#5b8def',
-    }
-    const blob = new Blob([JSON.stringify(dynamicManifest)], {
-      type: 'application/json',
-    })
-    const manifestURL = URL.createObjectURL(blob)
-    const link = document.createElement('link')
-    link.rel = 'manifest'
-    link.href = manifestURL
-    document.head.appendChild(link)
-  })
-
   useEffect(() => {
     const handler = (event) => {
       event.preventDefault()
@@ -59,16 +22,14 @@ const AppDownload = () => {
     } else if (window.matchMedia('(display-mode: standalone)').matches) {
       alert('이미 바탕화면에 추가되어 있습니다.')
     } else {
-      if (deferredPrompt) {
-        deferredPrompt.prompt()
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the A2HS prompt')
-          } else {
-            console.log('User dismissed the A2HS prompt')
-          }
-        })
-      }
+      deferredPrompt.prompt()
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt')
+        } else {
+          console.log('User dismissed the A2HS prompt')
+        }
+      })
     }
   }
 

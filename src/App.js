@@ -11,10 +11,46 @@ import Root from './screen/mo/Root'
 import Compare from './screen/mo/Compare'
 import ErrorPage from './screen/mo/ErrorPage'
 
-
 function App() {
   const location = useLocation()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    const dynamicManifest = {
+      name: 'CABO',
+      short_name: 'CABO',
+      icons: [
+        {
+          src: 'favicon.ico',
+          sizes: '64x64 32x32 24x24 16x16',
+          type: 'image/x-icon',
+        },
+        {
+          src: 'logo192.png',
+          type: 'image/png',
+          sizes: '192x192',
+        },
+        {
+          src: 'logo512.png',
+          type: 'image/png',
+          sizes: '512x512',
+        },
+      ],
+      start_url: window.location.pathname,
+      display: 'standalone',
+      background_color: '#5b8def',
+      theme_color: '#5b8def',
+    }
+
+    const manifestString = JSON.stringify(dynamicManifest)
+
+    const link = document.createElement('link')
+    link.rel = 'manifest'
+    link.href = URL.createObjectURL(
+      new Blob([manifestString], { type: 'application/json' }),
+    )
+    document.head.appendChild(link)
+  })
 
   useEffect(() => {
     if (location.pathname !== '/mo/compare') {
