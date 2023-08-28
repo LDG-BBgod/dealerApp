@@ -49,24 +49,25 @@ const AppDownload = () => {
 
     if (deferredPrompt) {
       deferredPrompt.prompt()
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt')
-        } else {
-          console.log('User dismissed the A2HS prompt')
-        }
-      })
+      // deferredPrompt.userChoice.then((choiceResult) => {
+      //   if (choiceResult.outcome === 'accepted') {
+      //     console.log('User accepted the A2HS prompt')
+      //   } else {
+      //     console.log('User dismissed the A2HS prompt')
+      //   }
+      // })
     }
   }
 
   const handleButton = () => {
-    if (window.navigator && window.navigator['standalone']) {
-      alert('이미 바탕화면에 추가되어 있습니다.')
-    } else if (window.matchMedia('(display-mode: standalone)').matches) {
-      alert('이미 바탕화면에 추가되어 있습니다.')
-    } else {
-      installApp()
-    }
+    alert('바탕화면에 바로가기를 추가합니다.')
+    // if (window.navigator && window.navigator['standalone']) {
+    //   alert('이미 바탕화면에 추가되어 있습니다.')
+    // } else if (window.matchMedia('(display-mode: standalone)').matches) {
+    //   alert('이미 바탕화면에 추가되어 있습니다.')
+    // } else {
+    installApp()
+    // }
   }
 
   return (
