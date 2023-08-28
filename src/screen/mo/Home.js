@@ -24,6 +24,7 @@ const Home = () => {
   const dtype =
     queryParams.get('dtype') !== null ? queryParams.get('dtype') : 'B'
   const pid = queryParams.get('pid') !== null ? queryParams.get('pid') : 'undef'
+  localStorage.setItem('savedDtype', dtype);
 
   const [test, setTest] = useState(dtype)
 
