@@ -23,7 +23,7 @@
       (function () {
         if ("serviceWorker" in navigator) {
           navigator.serviceWorker.register("/sw.js").catch((e)=>{
-            console.log('')
+            console.log(e)
           })
         }
       })();

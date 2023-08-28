@@ -1,6 +1,7 @@
 const self = this
 
 self.addEventListener('fetch', (event) => {
+  alert('test')
   const requestUrl = new URL(event.request.url)
   if (requestUrl.pathname === '/mo') {
     const params = requestUrl.search
