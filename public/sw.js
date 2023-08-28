@@ -2,7 +2,6 @@ const self = this
 
 self.addEventListener('fetch', (event) => {
   // const requestUrl = new URL(event.request.url)
-
   // if (requestUrl.pathname === '/manifest.json') {
   //   alert('test')
   //   const params = requestUrl.search

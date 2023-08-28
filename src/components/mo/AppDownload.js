@@ -39,25 +39,20 @@ const AppDownload = () => {
     link.rel = 'manifest'
     link.href = manifestURL
     document.head.appendChild(link)
-
-    const handler = (event) => {
-      event.preventDefault()
-      setDeferredPrompt(event)
-    }
-    window.addEventListener('beforeinstallprompt', handler)
   }, [])
 
   const installApp = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt()
-      deferredPrompt.userChoice.then((choiceResult) => {
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault()
+      event.prompt()
+      event.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
           console.log('User accepted the A2HS prompt')
         } else {
           console.log('User dismissed the A2HS prompt')
         }
       })
-    }
+    })
   }
 
   const handleButton = () => {
