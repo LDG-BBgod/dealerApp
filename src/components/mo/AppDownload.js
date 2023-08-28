@@ -17,11 +17,16 @@ const AppDownload = () => {
   const installApp = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt()
+
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt')
-        } else {
-          console.log('User dismissed the A2HS prompt')
+          const url = new URL(window.location.href)
+          const newStartUrl = url.pathname + url.search
+          alert(newStartUrl)
+          const manifest = document.querySelector('link[rel="manifest"]')
+          manifest.href = `/manifest.json?start_url=${encodeURIComponent(
+            newStartUrl,
+          )}`
         }
         setDeferredPrompt(null)
       })
