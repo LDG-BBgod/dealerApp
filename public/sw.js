@@ -2,9 +2,9 @@ const self = this
 
 self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url)
-  if (requestUrl.pathname === '/mo') {
+  if (requestUrl.pathname === '/') {
     const params = requestUrl.search
-    const newStartUrl = `/mo?${params}`
+    const newStartUrl = `./${params}`
     const modifiedManifest = JSON.parse(
       event.request.headers.get('Manifest-Modified'),
     )
