@@ -12,9 +12,6 @@ const AppDownload = () => {
       setDeferredPrompt(event)
     }
     window.addEventListener('beforeinstallprompt', handler)
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handler)
-    }
   }, [])
 
   const installApp = () => {
