@@ -19,8 +19,38 @@
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
-    <link rel="manifest" id="my-manifest-placeholder">
+    <link rel="manifest" id="web-manifest" />
     <script>
+      const dynamicManifest = {
+  name: 'CABO',
+  short_name: 'CABO',
+  icons: [
+  {
+    src: 'favicon.ico',
+    sizes: '64x64 32x32 24x24 16x16',
+    type: 'image/x-icon',
+  },
+  {
+    src: 'logo192.png',
+    type: 'image/png',
+    sizes: '192x192',
+  },
+  {
+    src: 'logo512.png',
+    type: 'image/png',
+    sizes: '512x512',
+  },
+  ],
+  start_url: window.location.pathname,
+  display: 'standalone',
+  background_color: '#5b8def',
+  theme_color: '#5b8def',
+}
+const manifestString = JSON.stringify(dynamicManifest)
+const blob = new Blob([manifestString], { type: 'application/json' }); 
+    const test = URL.createObjectURL(blob); 
+    document.querySelector('#web-manifest').setAttribute('href', test);
+
       (function () {
         if ("serviceWorker" in navigator) {
           navigator.serviceWorker.register("/sw.js").catch((e)=>{
