@@ -6,10 +6,15 @@ const AppDownload = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
 
   useEffect(() => {
-    window.addEventListener('beforeinstallprompt', (event) => {
+    const handler = (event) => {
+      console.log(123)
       event.preventDefault()
       setDeferredPrompt(event)
-    })
+    }
+    window.addEventListener('beforeinstallprompt', handler)
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler)
+    }
   }, [])
 
   const installApp = () => {
@@ -27,6 +32,7 @@ const AppDownload = () => {
   }
 
   const handleButton = () => {
+    installApp()
     if (window.navigator && window.navigator['standalone']) {
       alert('이미 바탕화면에 추가되어 있습니다.')
     } else if (window.matchMedia('(display-mode: standalone)').matches) {
