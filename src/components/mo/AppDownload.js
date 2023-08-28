@@ -22,7 +22,6 @@ const AppDownload = () => {
         if (choiceResult.outcome === 'accepted') {
           const url = new URL(window.location.href)
           const newStartUrl = url.pathname + url.search
-          alert(newStartUrl)
           const manifest = document.querySelector('link[rel="manifest"]')
           manifest.href = `/manifest.json?start_url=${encodeURIComponent(
             newStartUrl,
