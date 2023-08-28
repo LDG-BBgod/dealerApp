@@ -4,6 +4,7 @@ import Spacer from './Spacer'
 
 const AppDownload = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
+
   useEffect(() => {
     const handler = (event) => {
       event.preventDefault()
