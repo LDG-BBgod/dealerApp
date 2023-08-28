@@ -6,34 +6,61 @@ const AppDownload = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
 
   useEffect(() => {
+    const dynamicManifest = {
+      name: 'CABO',
+      short_name: 'CABO',
+      icons: [
+        {
+          src: 'favicon.ico',
+          sizes: '64x64 32x32 24x24 16x16',
+          type: 'image/x-icon',
+        },
+        {
+          src: 'logo192.png',
+          type: 'image/png',
+          sizes: '192x192',
+        },
+        {
+          src: 'logo512.png',
+          type: 'image/png',
+          sizes: '512x512',
+        },
+      ],
+      start_url: window.location.pathname,
+      display: 'standalone',
+      background_color: '#5b8def',
+      theme_color: '#5b8def',
+    }
+    const blob = new Blob([JSON.stringify(dynamicManifest)], {
+      type: 'application/json',
+    })
+    const manifestURL = URL.createObjectURL(blob)
+    const link = document.createElement('link')
+    link.rel = 'manifest'
+    link.href = manifestURL
+    document.head.appendChild(link)
+
     const handler = (event) => {
-      console.log(123)
       event.preventDefault()
       setDeferredPrompt(event)
     }
     window.addEventListener('beforeinstallprompt', handler)
   }, [])
 
-  const installApp = () => {
+  const installApp = async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt()
-
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
-          const url = new URL(window.location.href)
-          const newStartUrl = url.pathname + url.search
-          const manifest = document.querySelector('link[rel="manifest"]')
-          manifest.href = `/manifest.json?start_url=${encodeURIComponent(
-            newStartUrl,
-          )}`
+          console.log('User accepted the A2HS prompt')
+        } else {
+          console.log('User dismissed the A2HS prompt')
         }
-        setDeferredPrompt(null)
       })
     }
   }
 
   const handleButton = () => {
-    installApp()
     if (window.navigator && window.navigator['standalone']) {
       alert('이미 바탕화면에 추가되어 있습니다.')
     } else if (window.matchMedia('(display-mode: standalone)').matches) {
