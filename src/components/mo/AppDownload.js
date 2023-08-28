@@ -7,6 +7,42 @@ const AppDownload = () => {
   alert(deferredPrompt)
 
   useEffect(() => {
+    const dynamicManifest = {
+      name: 'CABO',
+      short_name: 'CABO',
+      icons: [
+        {
+          src: 'favicon.ico',
+          sizes: '64x64 32x32 24x24 16x16',
+          type: 'image/x-icon',
+        },
+        {
+          src: 'logo192.png',
+          type: 'image/png',
+          sizes: '192x192',
+        },
+        {
+          src: 'logo512.png',
+          type: 'image/png',
+          sizes: '512x512',
+        },
+      ],
+      start_url: window.location.pathname,
+      display: 'standalone',
+      background_color: '#5b8def',
+      theme_color: '#5b8def',
+    }
+    const blob = new Blob([JSON.stringify(dynamicManifest)], {
+      type: 'application/json',
+    })
+    const manifestURL = URL.createObjectURL(blob)
+    const link = document.createElement('link')
+    link.rel = 'manifest'
+    link.href = manifestURL
+    document.head.appendChild(link)
+  })
+
+  useEffect(() => {
     const handler = (event) => {
       event.preventDefault()
       setDeferredPrompt(event)
@@ -65,37 +101,3 @@ const Text = styled.div`
   font-weight: bold;
   color: #fff;
 `
-
-// const dynamicManifest = {
-//   name: 'CABO',
-//   short_name: 'CABO',
-//   icons: [
-//     {
-//       src: 'favicon.ico',
-//       sizes: '64x64 32x32 24x24 16x16',
-//       type: 'image/x-icon',
-//     },
-//     {
-//       src: 'logo192.png',
-//       type: 'image/png',
-//       sizes: '192x192',
-//     },
-//     {
-//       src: 'logo512.png',
-//       type: 'image/png',
-//       sizes: '512x512',
-//     },
-//   ],
-//   start_url: window.location.pathname,
-//   display: 'standalone',
-//   background_color: '#5b8def',
-//   theme_color: '#5b8def',
-// }
-// const blob = new Blob([JSON.stringify(dynamicManifest)], {
-//   type: 'application/json',
-// })
-// const manifestURL = URL.createObjectURL(blob)
-// const link = document.createElement('link')
-// link.rel = 'manifest'
-// link.href = manifestURL
-// document.head.appendChild(link)
