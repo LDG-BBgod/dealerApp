@@ -5,13 +5,23 @@ self.addEventListener('fetch', (event) => {
   if (requestUrl.pathname === '/mo') {
     const params = requestUrl.search
     const newStartUrl = `/mo${params}`
-    const modifiedManifest = JSON.parse(
-      event.request.headers.get('Manifest-Modified'),
-    )
-    modifiedManifest.start_url = newStartUrl
-    const modifiedResponse = new Response(JSON.stringify(modifiedManifest), {
-      headers: { 'Content-Type': 'application/json' },
-    })
-    event.respondWith(modifiedResponse)
+
+    if (event.request.url.endsWith('/manifest.json')) {
+      event.respondWith(
+        fetch(event.request).then((response) => {
+          return response.text().then((text) => {
+            const modifiedManifest = JSON.parse(text)
+            modifiedManifest.start_url = newStartUrl
+            const modifiedBlob = new Blob([JSON.stringify(modifiedManifest)], {
+              type: 'application/json',
+            })
+            const modifiedResponse = new Response(modifiedBlob, {
+              headers: { 'Content-Type': 'application/json' },
+            })
+            return modifiedResponse
+          })
+        }),
+      )
+    }
   }
 })
