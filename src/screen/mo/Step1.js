@@ -140,36 +140,32 @@ const Step1test = ({ setStep }) => {
 
   // 페이지 인잇
   useEffect(() => {
-    if (!isLogin) {
-      navigate(`/mo`)
-    } else {
-      const initPage = async () => {
-        setTimeout(async () => {
-          await axios
-            .get(process.env.REACT_APP_PAGEINIT, {
-              timeout: 15000,
-            })
-            .then((res) => {
-              const isErr = res.data.err
-              if (!isErr) {
-                setIsPageInit(true)
-              } else {
-                // [0001]
-                alert(
-                  '페이지 준비도중 오류가 발생하였습니다. \n페이지를 새로고침해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
-                )
-              }
-            })
-            .catch((err) => {
+    const initPage = async () => {
+      setTimeout(async () => {
+        await axios
+          .get(process.env.REACT_APP_PAGEINIT, {
+            timeout: 15000,
+          })
+          .then((res) => {
+            const isErr = res.data.err
+            if (!isErr) {
+              setIsPageInit(true)
+            } else {
+              // [0001]
               alert(
-                `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+                '페이지 준비도중 오류가 발생하였습니다. \n페이지를 새로고침해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
               )
-              navigate(`/mo/error`)
-            })
-        }, 1000)
-      }
-      initPage()
+            }
+          })
+          .catch((err) => {
+            alert(
+              `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+            )
+            navigate(`/mo/error`)
+          })
+      }, 1000)
     }
+    initPage()
   }, [navigate, isLogin])
 
   return (
@@ -254,7 +250,7 @@ const Step1test = ({ setStep }) => {
       <Spacer space={40} />
       {isLoading && <Loading />}
       {isModalOpen && (
-        <Overlay>
+        <Overlay onClose={() => setIsModalOpen(false)}>
           <Auth
             func={handleModalButton}
             backFunc={() => {
@@ -268,7 +264,7 @@ const Step1test = ({ setStep }) => {
         </Overlay>
       )}
       {isModalOpen2 && (
-        <Overlay>
+        <Overlay onClose={() => setIsModalOpen2(false)}>
           <AuthList
             backFunc={() => {
               setIsModalOpen(true)
@@ -318,7 +314,7 @@ const Step1test = ({ setStep }) => {
         </Overlay>
       )}
       {isModalOpen3 && (
-        <Overlay>
+        <Overlay onClose={() => setIsModalOpen3(false)}>
           <div
             style={{ textAlign: 'left' }}
             onClick={() => {

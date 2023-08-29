@@ -1,5 +1,6 @@
 // 모듈
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 // 리덕스
 
 // 컴포넌트
@@ -8,15 +9,23 @@ import Step2 from './Step2'
 import Step3 from './Step3'
 import Step4 from './Step4'
 import Step5 from './Step5'
-import Overlay from '../../components/mo/Overlay'
 // API
+import GetUrlParams from '../../apis/GetUrlParams'
 
 const Compare = () => {
+  const navigate = useNavigate()
+  const { pid } = GetUrlParams()
   const [step, setStep] = useState(1)
 
   const steps = [Step1, Step2, Step3, Step4, Step5]
 
   const StepComponent = steps[step - 1]
+
+  useEffect(() => {
+    if (!pid) {
+      navigate(`/mo`)
+    }
+  }, [pid, navigate])
 
   useEffect(() => {
     const handleBeforUnload = (e) => {

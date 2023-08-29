@@ -1,40 +1,12 @@
 import { styled } from 'styled-components'
 import { useEffect, useState } from 'react'
+
 import Spacer from './Spacer'
 
-const AppDownload = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState(null)
-
-  useEffect(() => {
-    const handler = (event) => {
-      event.preventDefault()
-      setDeferredPrompt(event)
-    }
-    window.addEventListener('beforeinstallprompt', handler)
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handler)
-    }
-  }, [])
-
-  const handleButton = () => {
-    if (window.navigator && window.navigator['standalone']) {
-      alert('이미 바탕화면에 추가되어 있습니다.')
-    } else if (window.matchMedia('(display-mode: standalone)').matches) {
-      alert('이미 바탕화면에 추가되어 있습니다.')
-    } else {
-      deferredPrompt.prompt()
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt')
-        } else {
-          console.log('User dismissed the A2HS prompt')
-        }
-      })
-    }
-  }
+const AppDownload = ({ Func = null }) => {
 
   return (
-    <Box onClick={handleButton}>
+    <Box onClick={Func}>
       <img src="/img/buttonLogo.svg" alt="logo" width={20} height={20} />
       <Spacer horizontal={false} space={10} />
       <Text>앱 다운로드</Text>

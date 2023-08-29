@@ -313,7 +313,7 @@ const Step5 = ({ setStep }) => {
       )}
       <Spacer space={50} />
       {isModalOpen && (
-        <Overlay>
+        <Overlay onClose={() => setIsModalOpen(false)}>
           <div
             style={{
               display: 'flex',
@@ -357,7 +357,7 @@ const Step5 = ({ setStep }) => {
         </Overlay>
       )}
       {isModalOpen2 && (
-        <Overlay>
+        <Overlay onClose={() => setIsModalOpen2(false)}>
           <div
             style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center' }}
           >

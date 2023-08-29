@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
 import { changeIsLogin } from '../../actions/dealer'
@@ -12,21 +12,20 @@ import Spacer from '../../components/mo/Spacer'
 import CompanyLogo from '../../components/mo/CompanyLogo'
 import AppDownload from '../../components/mo/AppDownload'
 import Loading from '../../components/mo/Loading'
+import StepButton from '../../components/mo/StepButton'
+import Overlay from '../../components/mo/Overlay'
+
+import getUrlParams from '../../apis/GetUrlParams'
 
 const Home = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { isMobile } = useSelector((state) => state.dealer)
   const [isLoading, setIsLoading] = useState(false)
   const [value, setValue] = useState('')
-
-  const { search } = useLocation()
-  const queryParams = new URLSearchParams(search)
-  const dtype =
-    queryParams.get('dtype') !== null ? queryParams.get('dtype') : 'B'
-  const pid = queryParams.get('pid') !== null ? queryParams.get('pid') : 'undef'
-  localStorage.setItem('savedDtype', dtype);
-
-  const [test, setTest] = useState(dtype)
+  const { dtype, pid } = getUrlParams()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isAndroid, setIsAndroid] = useState(true)
 
   const handleInput = (e) => {
     setValue(e.target.value)
@@ -61,10 +60,20 @@ const Home = () => {
     setIsLoading(false)
   }
 
+  useEffect(() => {
+    const isIOSDevice = /(iPhone|iPod|iPad)/.test(navigator.userAgent)
+    if (isIOSDevice) {
+      setIsAndroid(false)
+    }
+  }, [])
+
+  const handleDownload = () => {
+    setIsModalOpen(true)
+  }
+
   return (
     <Backgroud>
       <MainSection>
-        <div>{test}</div>
         <MobileHeader />
         <Spacer space={50} />
         <span
@@ -77,10 +86,14 @@ const Home = () => {
         >
           딜러 전용 다이렉트 보험료 비교
         </span>
-        <Spacer space={20} />
-        <div style={{ marginLeft: 'auto' }}>
-          <AppDownload />
-        </div>
+        {isMobile ? (
+          <div style={{ marginLeft: 'auto' }}>
+            <Spacer space={20} />
+            <AppDownload Func={handleDownload} />
+          </div>
+        ) : (
+          <div></div>
+        )}
 
         <Spacer space={50} />
         <img
@@ -124,6 +137,61 @@ const Home = () => {
         <CompanyLogo src={'/img/hanhwa.svg'} />
         <Spacer space={50} />
         {isLoading && <Loading />}
+        {isModalOpen && (
+          <Overlay onClose={() => setIsModalOpen(false)}>
+            {isAndroid ? (
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ lineHeight: 1.5 }}>
+                  홈화면에 바로가기 아이콘을 만드시려면 다음 스탭을
+                  진행해주세요.
+                </div>
+                <Spacer space={15} />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <div>1. 우측하단 메뉴 선택</div>
+                  <Spacer horizontal={false} space={10} />
+                  <img
+                    src="/img/androidMenu.svg"
+                    alt="down"
+                    width={16}
+                    height={16}
+                  />
+                </div>
+                <Spacer space={10} />
+                <div>2. 현재 페이지 추가</div>
+                <Spacer space={10} />
+                <div>3. 홈화면에 추가</div>
+              </div>
+            ) : (
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ lineHeight: 1.4 }}>
+                  하단 메뉴바 중앙에
+                  <img
+                    src="/img/iponeExport.svg"
+                    alt="down"
+                    width={16}
+                    height={16}
+                    style={{ marginLeft: 10, marginRight: 5 }}
+                  />
+                  아이콘을 눌러 홈화면에 바로가기를 만드실 수 있습니다.
+                </div>
+              </div>
+            )}
+            <Spacer space={20} />
+            <StepButton
+              buttonFunc={() => {
+                setIsModalOpen(false)
+              }}
+              text={'확 인'}
+              completed={true}
+            />
+          </Overlay>
+        )}
       </MainSection>
     </Backgroud>
   )
