@@ -180,7 +180,7 @@ const Step4 = ({ setStep }) => {
     if (range.id === 'famradio04') {
       return (
         <div>
-          <Text>배우자 (생년월일)</Text>
+          <Text>배우자 (생년월일 8자리)</Text>
           <Spacer space={8} />
           <Box>
             <InputFsn
@@ -196,7 +196,7 @@ const Step4 = ({ setStep }) => {
     } else if (range.id === 'famradio02') {
       return (
         <div>
-          <Text>지정1인 (생년월일)</Text>
+          <Text>지정1인 (생년월일 8자리)</Text>
           <Spacer space={8} />
           <Box>
             <InputFsn
@@ -328,7 +328,9 @@ const Step4 = ({ setStep }) => {
         setIsModalOpen(true)
       } else {
         setIsClickedNext(false)
-        alert('운전자범위, 최저 연령자, 보장 정도를 모두 선택해주세요.')
+        alert(
+          '운전자범위, 최저 연령자 "생년월일 8자리" , 보장 정도를 모두 선택해주세요.',
+        )
       }
     } else {
       setIsModalOpen(false)
@@ -424,7 +426,7 @@ const Step4 = ({ setStep }) => {
       />
       <Spacer space={20} />
 
-      <Text>최저 연령자 (생년월일)</Text>
+      <Text>최저 연령자 (생년월일 8자리)</Text>
       <Spacer space={8} />
       <Box>
         <InputFsn

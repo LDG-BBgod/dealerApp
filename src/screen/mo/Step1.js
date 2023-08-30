@@ -183,7 +183,7 @@ const Step1test = ({ setStep }) => {
           })
           .catch((err) => {
             alert(
-              `이부분이 현재문제!!  전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+              `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
             )
             navigate(`/mo/error`)
           })
@@ -194,7 +194,7 @@ const Step1test = ({ setStep }) => {
 
   useEffect(() => {
     sendLog(pid, '스탭1 진입완료', 'log')
-  }, [pid])
+  }, [])
 
   return (
     <MainSection>

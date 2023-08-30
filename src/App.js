@@ -23,8 +23,7 @@ function App() {
       const shutDown = async () => {
         await axios
           .post(process.env.REACT_APP_SHUTDOWN, { pid })
-          .catch((err) => {
-          })
+          .catch((err) => {})
       }
       shutDown()
     }
