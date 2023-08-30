@@ -47,7 +47,7 @@ const Home = () => {
       )
       .then((res) => {
         if (res.data) {
-          dispatch(changeIsLogin(true))
+          localStorage.setItem('isLogin', 'true')
           sendLog(pid, '로그인', 'log')
           navigate(`/mo/compare?dtype=${dtype}&pid=${pid}`)
         } else {

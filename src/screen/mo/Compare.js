@@ -14,18 +14,23 @@ import GetUrlParams from '../../apis/GetUrlParams'
 
 const Compare = () => {
   const navigate = useNavigate()
-  const { pid } = GetUrlParams()
   const [step, setStep] = useState(1)
+  const [isReady, setIsReady] = useState(false)
 
   const steps = [Step1, Step2, Step3, Step4, Step5]
 
   const StepComponent = steps[step - 1]
 
+  // 비밀번호 로그인 했는지 체크 (다른페이지 url로 접속 blcok)
   useEffect(() => {
-    if (!pid) {
-      navigate(`/mo`)
+    const isLogin = localStorage.getItem('isLogin')
+    if (isLogin !== 'true') {
+      setIsReady(false)
+      navigate('/mo')
+    } else {
+      setIsReady(true)
     }
-  }, [pid, navigate])
+  }, [])
 
   useEffect(() => {
     const handleBeforUnload = (e) => {
@@ -68,9 +73,7 @@ const Compare = () => {
     }
   }, [])
   return (
-    <div>
-      <StepComponent setStep={setStep} />
-    </div>
+    <div>{isReady ? <StepComponent setStep={setStep} /> : <div></div>}</div>
   )
 }
 

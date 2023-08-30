@@ -9,6 +9,7 @@ import { changeIsMobile } from './actions/dealer'
 import Home from './screen/mo/Home'
 import Root from './screen/mo/Root'
 import Compare from './screen/mo/Compare'
+import CreatePid from './screen/mo/CreatePid'
 import ErrorPage from './screen/mo/ErrorPage'
 
 import getUrlParams from './apis/GetUrlParams'
@@ -39,6 +40,7 @@ function App() {
         <Route path="/" Component={Root} />
         <Route path="/mo" Component={Home} />
         <Route path="/mo/compare" Component={Compare} />
+        <Route path="/mo/cp" Component={CreatePid} />
         <Route path="/mo/error" Component={ErrorPage} />
       </Routes>
     </div>

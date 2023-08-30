@@ -40,7 +40,6 @@ const Step1test = ({ setStep }) => {
   const dispatch = useDispatch()
   const fsnInputRef = useRef(null)
   const bsnInputRef = useRef(null)
-  const { isLogin } = useSelector((state) => state.dealer)
   const [isPageInit, setIsPageInit] = useState(false)
   const [name, setName] = useState('') //초기 ''
   const [fsn, setFsn] = useState('') //초기 ''
@@ -190,7 +189,7 @@ const Step1test = ({ setStep }) => {
       }, 1000)
     }
     initPage()
-  }, [navigate])
+  }, [])
 
   useEffect(() => {
     sendLog(pid, '스탭1 진입완료', 'log')
