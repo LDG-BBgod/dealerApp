@@ -112,9 +112,8 @@ const Step5 = ({ setStep }) => {
         })
         .catch((err) => {
           alert(
-            `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+            `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.`,
           )
-          navigate(`/mo/error`)
         })
       setIsLoading(false)
       setIsModalOpen(false)
@@ -156,9 +155,8 @@ const Step5 = ({ setStep }) => {
         })
         .catch((err) => {
           alert(
-            `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+            `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.`,
           )
-          navigate(`/mo/error`)
         })
       setIsLoading(false)
     } else {
@@ -203,7 +201,6 @@ const Step5 = ({ setStep }) => {
 
   useEffect(() => {
     sendLog(pid, '스탭5 진입완료', 'log')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

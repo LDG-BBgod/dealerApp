@@ -21,7 +21,7 @@ const Compare = () => {
 
   const StepComponent = steps[step - 1]
 
-  // 비밀번호 로그인 했는지 체크 (다른페이지 url로 접속 blcok)
+  // 비밀번호 로그인 했는지 체크 (직접 compare url로 접속 blcok)
   useEffect(() => {
     const isLogin = localStorage.getItem('isLogin')
     if (isLogin !== 'true') {

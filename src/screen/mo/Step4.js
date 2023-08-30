@@ -240,9 +240,8 @@ const Step4 = ({ setStep }) => {
         })
         .catch((err) => {
           alert(
-            `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+            `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.`,
           )
-          navigate(`/mo/error`)
         })
     }
     if (isClickedPrev) {
@@ -314,9 +313,8 @@ const Step4 = ({ setStep }) => {
           })
           .catch((err) => {
             alert(
-              `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
+              `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.`,
             )
-            navigate(`/mo/error`)
           })
       } else {
         setIsClickedNext(false)
