@@ -151,9 +151,9 @@ const Step1test = ({ setStep }) => {
   // 셧다운
   useEffect(() => {
     const shutDown = async () => {
-      await axios
-        .post(process.env.REACT_APP_SHUTDOWN, { pid })
-        .catch((err) => {})
+      await axios.post(process.env.REACT_APP_SHUTDOWN, { pid }).catch((err) => {
+        console.log(123)
+      })
     }
     shutDown()
   }, [])
@@ -162,6 +162,7 @@ const Step1test = ({ setStep }) => {
   useEffect(() => {
     const initPage = async () => {
       setTimeout(async () => {
+        alert(pid)
         await axios
           .post(
             process.env.REACT_APP_PAGEINIT,
