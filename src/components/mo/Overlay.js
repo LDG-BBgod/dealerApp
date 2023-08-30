@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 
-function Overlay({ children, onClose = null }) {
+function Overlay({ children, onClose = () => {} }) {
   const { isMobile } = useSelector((state) => state.dealer)
 
   const handleOverlayClick = (e) => {

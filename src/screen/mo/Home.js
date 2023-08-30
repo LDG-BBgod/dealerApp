@@ -16,16 +16,18 @@ import StepButton from '../../components/mo/StepButton'
 import Overlay from '../../components/mo/Overlay'
 
 import getUrlParams from '../../apis/GetUrlParams'
+import sendLog  from '../../apis/sendLog'
 
 const Home = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { isMobile } = useSelector((state) => state.dealer)
+
   const [isLoading, setIsLoading] = useState(false)
   const [value, setValue] = useState('')
-  const { dtype, pid } = getUrlParams()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isAndroid, setIsAndroid] = useState(true)
+  const { dtype, pid } = getUrlParams()
 
   const handleInput = (e) => {
     setValue(e.target.value)
@@ -46,6 +48,7 @@ const Home = () => {
       .then((res) => {
         if (res.data) {
           dispatch(changeIsLogin(true))
+          sendLog(pid, '로그인', 'log')
           navigate(`/mo/compare?dtype=${dtype}&pid=${pid}`)
         } else {
           alert('잘못된 비밀번호입니다')
@@ -66,6 +69,11 @@ const Home = () => {
       setIsAndroid(false)
     }
   }, [])
+  useEffect(()=>{
+    axios.post(process.env.REACT_APP_CREATEUSER, { pid })
+    .then((res) => {})
+    .catch((err) => {})
+  }, [pid])
 
   const handleDownload = () => {
     setIsModalOpen(true)
@@ -163,7 +171,7 @@ const Home = () => {
                   />
                 </div>
                 <Spacer space={10} />
-                <div>2. 현재 페이지 추가</div>
+                <div>2. 다른 브라우저로 열기 or 현재 페이지 추가</div>
                 <Spacer space={10} />
                 <div>3. 홈화면에 추가</div>
               </div>

@@ -13,6 +13,9 @@ import StepButton from '../../components/mo/StepButton'
 import Loading from '../../components/mo/Loading'
 import SelectArea from '../../components/mo/SelectArea'
 
+import getUrlParams from '../../apis/GetUrlParams'
+import sendLog  from '../../apis/sendLog'
+
 const Step3 = ({ setStep }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -43,6 +46,7 @@ const Step3 = ({ setStep }) => {
     id: '',
     state: false,
   })
+  const { pid } = getUrlParams()
 
 
 
@@ -158,6 +162,10 @@ const Step3 = ({ setStep }) => {
       setIsComplete(false)
     }
   }, [carValue1, carValue2, carValue3, carValue4, carValue5])
+
+  useEffect(() => {
+    sendLog(pid, '스탭3 진입완료', 'log')
+  }, [pid])
 
   return (
     <MainSection>

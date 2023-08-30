@@ -5,16 +5,19 @@ import { dealer } from '../reducers/dealer'
 import { phone } from '../reducers/phone'
 import { jumin } from '../reducers/jumin'
 import { resultData } from '../reducers/resultData'
+import { customer } from '../reducers/customer'
 
 import logger from 'redux-logger'
 
 const rootReducer = combineReducers({
-  changeCarInfo: changeCarInfo,
-  carSelectComplete: carSelectComplete,
-  dealer: dealer,
-  phone: phone,
-  jumin: jumin,
-  resultData: resultData,
+  changeCarInfo,
+  carSelectComplete,
+  dealer,
+  phone,
+  jumin,
+  resultData,
+  customer
+
 })
 
 // const store = createStore(rootReducer, applyMiddleware(logger))

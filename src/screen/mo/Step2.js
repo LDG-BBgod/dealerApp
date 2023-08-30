@@ -12,12 +12,16 @@ import StepButton from '../../components/mo/StepButton'
 import InputArea from '../../components/mo/InputArea'
 import Loading from '../../components/mo/Loading'
 
+import getUrlParams from '../../apis/GetUrlParams'
+import sendLog  from '../../apis/sendLog'
+
 const Step2 = ({ setStep }) => {
   const navigate = useNavigate()
   const [authNum, setAuthNum] = useState('')
   const [isComplete, setIsComplete] = useState(false)
   const [countdown, setCountdown] = useState(179) // 3분 - 1초
   const [isLoading, setIsLoading] = useState(false)
+  const { pid } = getUrlParams()
 
   const handleAuthNum = (e) => {
     const input = e.target.value.replace(/\D/g, '') // 숫자 외의 문자 제거
@@ -83,6 +87,10 @@ const Step2 = ({ setStep }) => {
       clearInterval(interval)
     }
   }, [])
+
+  useEffect(() => {
+    sendLog(pid, '스탭2 진입완료', 'log')
+  }, [pid])
 
   return (
     <MainSection>

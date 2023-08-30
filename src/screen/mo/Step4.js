@@ -15,10 +15,14 @@ import Loading from '../../components/mo/Loading'
 import Overlay from '../../components/mo/Overlay'
 import SelectArea from '../../components/mo/SelectArea'
 
+import getUrlParams from '../../apis/GetUrlParams'
+import sendLog from '../../apis/sendLog'
+
 const Step4 = ({ setStep }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { jumin } = useSelector((state) => state.jumin)
+  const { csname, phoneAuth, fsn, bsn } = useSelector((state) => state.customer)
   const [isComplete, setIsComplete] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -76,6 +80,7 @@ const Step4 = ({ setStep }) => {
     id: '',
     state: false,
   })
+  const { pid } = getUrlParams()
 
   const isSelected = useSelector((state) => state.carSelectComplete.isComplete)
 
@@ -276,13 +281,24 @@ const Step4 = ({ setStep }) => {
 
         const res = await axios
           .post(process.env.REACT_APP_GETRESULT, body, {
-            timeout: 30000,
+            timeout: 60000,
           })
           .then((res) => {
             setIsModalOpen(false)
             if (!res.data.err) {
               if (res.data.msg.success) {
                 dispatch(setResult(res.data.msg.text))
+                sendLog(
+                  pid,
+                  {
+                    csname,
+                    phoneAuth,
+                    fsn,
+                    bsn,
+                    list: res.data.msg.text,
+                  },
+                  'customer',
+                )
                 setStep(5)
               } else {
                 alert(res.data.msg.text)
@@ -315,6 +331,7 @@ const Step4 = ({ setStep }) => {
     if (isSelected && isClickedNext) {
       handleButtonSubmit()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     isSelected,
     isClickedNext,
@@ -381,6 +398,10 @@ const Step4 = ({ setStep }) => {
       setMinBrith('')
     }
   }, [range, jumin])
+
+  useEffect(() => {
+    sendLog(pid, '스탭4 진입완료', 'log')
+  }, [pid])
 
   return (
     <MainSection>

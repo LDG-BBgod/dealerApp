@@ -1,11 +1,17 @@
 import { styled } from 'styled-components'
 import { useEffect, useState, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, batch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import { setPhone as setPhoneNum } from '../../actions/phone'
 import { setJumin } from '../../actions/jumin'
+import {
+  changeCSName,
+  changeFsn,
+  changeBsn,
+  changePhoneAuth,
+} from '../../actions/customer'
 
 import MainSection from '../../components/mo/MainSection'
 import StepHeader from '../../components/mo/StepHeader'
@@ -26,6 +32,9 @@ import Text6 from '../text6'
 import Text7 from '../text7'
 import Text8 from '../text8'
 
+import getUrlParams from '../../apis/GetUrlParams'
+import sendLog from '../../apis/sendLog'
+
 const Step1test = ({ setStep }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -44,6 +53,7 @@ const Step1test = ({ setStep }) => {
   const [isModalOpen3, setIsModalOpen3] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [content, setContent] = useState(<div></div>)
+  const { pid } = getUrlParams()
 
   const handleName = (e) => {
     setName(e.target.value)
@@ -97,8 +107,15 @@ const Step1test = ({ setStep }) => {
       .then((res) => {
         if (!res.data.err) {
           if (res.data.msg.success) {
-            dispatch(setPhoneNum(phone))
-            dispatch(setJumin(fsn))
+            batch(() => {
+              dispatch(setPhoneNum(phone))
+              dispatch(setJumin(fsn))
+              dispatch(changeCSName(name))
+              dispatch(changeFsn(fsn))
+              dispatch(changeBsn(bsn))
+              dispatch(changePhoneAuth(phone))
+            })
+
             setStep(2)
           } else {
             alert('조회불가, 고객정보를 다시한번 확인해주세요.')
@@ -166,7 +183,11 @@ const Step1test = ({ setStep }) => {
       }, 1000)
     }
     initPage()
-  }, [navigate, isLogin])
+  }, [navigate])
+
+  useEffect(() => {
+    sendLog(pid, '스탭1 진입완료', 'log')
+  }, [pid])
 
   return (
     <MainSection>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { styled } from 'styled-components'
 import { useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import MainSection from '../../components/mo/MainSection'
@@ -16,13 +16,15 @@ import StepButton from '../../components/mo/StepButton'
 import InputArea from '../../components/mo/InputArea'
 import CompanyLogo from '../../components/mo/CompanyLogo'
 
+import getUrlParams from '../../apis/GetUrlParams'
+import sendLog from '../../apis/sendLog'
+
 const Step5 = ({ setStep }) => {
   const navigate = useNavigate()
   const phoneNum = useSelector((state) => state.phone.phone)
   const { isMobile } = useSelector((state) => state.dealer)
-  const { search } = useLocation()
-  const queryParams = new URLSearchParams(search)
-  const dtype = queryParams.get('dtype')
+  const { csname, phoneAuth, fsn, bsn } = useSelector((state) => state.customer)
+
   const { result } = useSelector((state) => state.resultData)
   const [resData, setResData] = useState([])
   const [callData, setCallData] = useState([])
@@ -46,7 +48,7 @@ const Step5 = ({ setStep }) => {
     list9: false,
     list10: false,
   })
-
+  const { pid, dtype } = getUrlParams()
   function countTrueValues(obj) {
     let count = 0
     for (const key in obj) {
@@ -67,7 +69,6 @@ const Step5 = ({ setStep }) => {
       alert('1개 이상 선택해주세요.')
     }
   }
-
   const handelSendSMS = async () => {
     const regex = /^(010|02)[-\s]?\d{3,4}[-\s]?\d{4}$/
     if (regex.test(phone)) {
@@ -82,6 +83,26 @@ const Step5 = ({ setStep }) => {
         selectedList,
         isOnline,
       }
+      // 로그전달
+      const indexs = selectedList.map((item) => {
+        return parseInt(item.match(/\d+/)[0], 10)
+      })
+      const listsIndex = indexs.map((index) => {
+        return resData[index]
+      })
+      const ids = listsIndex.map((item) => item.name)
+      sendLog(
+        pid,
+        {
+          csname,
+          phoneSend: phone,
+          insuType: isOnline,
+          insuList: ids,
+        },
+        'sendContent',
+      )
+      // 로그전달
+
       await axios
         .post(process.env.REACT_APP_SENDSMS, body, {
           timeout: 10000,
@@ -180,9 +201,10 @@ const Step5 = ({ setStep }) => {
     }
   }, [dtype, result])
 
-  // 뒤로가기 핸들링
-
-  useEffect(() => {}, [])
+  useEffect(() => {
+    sendLog(pid, '스탭5 진입완료', 'log')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <MainSection>
