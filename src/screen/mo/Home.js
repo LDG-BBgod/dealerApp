@@ -73,7 +73,7 @@ const Home = () => {
     axios.post(process.env.REACT_APP_CREATEUSER, { pid })
     .then((res) => {})
     .catch((err) => {})
-  }, [pid])
+  }, [])
 
   const handleDownload = () => {
     setIsModalOpen(true)

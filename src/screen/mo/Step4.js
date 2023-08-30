@@ -357,10 +357,11 @@ const Step4 = ({ setStep }) => {
   ])
 
   useEffect(() => {
-    const minBirthCheck = minBirth === '' ? false : true
+    const regex = /^(19|20)\d\d(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/
+    const minBirthCheck = regex.test(minBirth) ? true : false
     let secondBirthCheck = true
     if (range.id === 'famradio04' || range.id === 'famradio02') {
-      secondBirthCheck = secondBirth === '' ? false : true
+      secondBirthCheck = regex.test(secondBirth) ? true : false
     }
 
     let levelCehck = level.state

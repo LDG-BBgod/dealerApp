@@ -24,7 +24,6 @@ function App() {
         await axios
           .post(process.env.REACT_APP_SHUTDOWN, { pid })
           .catch((err) => {
-            console.log(456)
           })
       }
       shutDown()
