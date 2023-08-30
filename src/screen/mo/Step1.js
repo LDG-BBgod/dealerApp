@@ -99,6 +99,7 @@ const Step1test = ({ setStep }) => {
       bsn,
       telcom,
       phone,
+      pid,
     }
     await axios
       .post(process.env.REACT_APP_PHONESUBMIT, body, {
@@ -150,7 +151,9 @@ const Step1test = ({ setStep }) => {
   // 셧다운
   useEffect(() => {
     const shutDown = async () => {
-      await axios.post(process.env.REACT_APP_SHUTDOWN).catch((err) => {})
+      await axios
+        .post(process.env.REACT_APP_SHUTDOWN, { pid })
+        .catch((err) => {})
     }
     shutDown()
   }, [])
@@ -160,9 +163,13 @@ const Step1test = ({ setStep }) => {
     const initPage = async () => {
       setTimeout(async () => {
         await axios
-          .get(process.env.REACT_APP_PAGEINIT, {
-            timeout: 15000,
-          })
+          .post(
+            process.env.REACT_APP_PAGEINIT,
+            { pid },
+            {
+              timeout: 15000,
+            },
+          )
           .then((res) => {
             const isErr = res.data.err
             if (!isErr) {

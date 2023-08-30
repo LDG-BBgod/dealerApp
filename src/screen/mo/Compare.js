@@ -60,7 +60,7 @@ const Compare = () => {
 
   useEffect(() => {
     // 페이지 디자인시 사용
-    // setStep(1)
+    // setStep(4)
     // 페이지 디자인시 사용
 
     return () => {

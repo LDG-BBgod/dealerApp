@@ -11,14 +11,19 @@ import Root from './screen/mo/Root'
 import Compare from './screen/mo/Compare'
 import ErrorPage from './screen/mo/ErrorPage'
 
+import getUrlParams from './apis/GetUrlParams'
+
 function App() {
   const location = useLocation()
   const dispatch = useDispatch()
+  const { pid } = getUrlParams()
 
   useEffect(() => {
     if (location.pathname !== '/mo/compare') {
       const shutDown = async () => {
-        await axios.post(process.env.REACT_APP_SHUTDOWN).catch((err) => {})
+        await axios
+          .post(process.env.REACT_APP_SHUTDOWN, { pid })
+          .catch((err) => {})
       }
       shutDown()
     }

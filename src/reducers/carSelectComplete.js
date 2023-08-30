@@ -1,7 +1,7 @@
 import { SELECTING, SELECTED } from '../actions/carSelectComplete'
 
 export const initialState = {
-  isComplete: true,
+  isComplete: false,
 }
 
 export const carSelectComplete = (state = initialState, action) => {

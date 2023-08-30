@@ -216,7 +216,7 @@ const Step4 = ({ setStep }) => {
 
   useEffect(() => {
     const handleButtonPrev = async () => {
-      const body = {}
+      const body = { pid }
 
       const res = await axios
         .post(process.env.REACT_APP_STEP4BACK, body, {
@@ -277,6 +277,7 @@ const Step4 = ({ setStep }) => {
           option6: option6.id,
           option7: option7.id,
           option8: option8.id,
+          pid,
         }
 
         const res = await axios
@@ -319,19 +320,22 @@ const Step4 = ({ setStep }) => {
           })
       } else {
         setIsClickedNext(false)
-        alert('생년월일 입력을 다시한번 확인해주세요. ex)19960101')
       }
     }
 
     if (isClickedNext) {
-      setIsModalOpen(true)
+      if (isComplete) {
+        setIsModalOpen(true)
+      } else {
+        setIsClickedNext(false)
+        alert('운전자범위, 최저 연령자, 보장 정도를 모두 선택해주세요.')
+      }
     } else {
       setIsModalOpen(false)
     }
     if (isSelected && isClickedNext) {
       handleButtonSubmit()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     isSelected,
     isClickedNext,
@@ -543,7 +547,7 @@ const Step4 = ({ setStep }) => {
             setIsClickedNext(true)
           }}
           text={'예상 보험료 확인'}
-          completed={isComplete}
+          completed={true}
         />
       </div>
       <Spacer space={40} />

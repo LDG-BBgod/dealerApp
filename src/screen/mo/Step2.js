@@ -41,6 +41,7 @@ const Step2 = ({ setStep }) => {
 
     const body = {
       authNum,
+      pid
     }
     const res = await axios
       .post(process.env.REACT_APP_AUTHCHECK, body, {

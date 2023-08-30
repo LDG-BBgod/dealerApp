@@ -14,7 +14,7 @@ import Loading from '../../components/mo/Loading'
 import SelectArea from '../../components/mo/SelectArea'
 
 import getUrlParams from '../../apis/GetUrlParams'
-import sendLog  from '../../apis/sendLog'
+import sendLog from '../../apis/sendLog'
 
 const Step3 = ({ setStep }) => {
   const navigate = useNavigate()
@@ -47,8 +47,6 @@ const Step3 = ({ setStep }) => {
     state: false,
   })
   const { pid } = getUrlParams()
-
-
 
   const getCarInfo = async (url, body) => {
     let returnData = null
@@ -114,39 +112,44 @@ const Step3 = ({ setStep }) => {
     }
   }
   const handleButton = async () => {
-    dispatch(carSeleting())
-    const body = {
-      carValue1: carValue1.id,
-      carValue2: carValue2.id,
-      carValue3: carValue3.id,
-      carValue4: carValue4.id,
-      carValue5: carValue5.id,
-    }
+    if (isComplete) {
+      dispatch(carSeleting())
+      const body = {
+        carValue1: carValue1.id,
+        carValue2: carValue2.id,
+        carValue3: carValue3.id,
+        carValue4: carValue4.id,
+        carValue5: carValue5.id,
+        pid,
+      }
 
-    axios
-      .post(process.env.REACT_APP_SELECTCAR, body, {
-        timeout: 15000,
-      })
-      .then((res) => {
-        if (!res.data.err) {
-          if (res.data.msg.success) {
-            dispatch(carSeleted())
+      axios
+        .post(process.env.REACT_APP_SELECTCAR, body, {
+          timeout: 15000,
+        })
+        .then((res) => {
+          if (!res.data.err) {
+            if (res.data.msg.success) {
+              dispatch(carSeleted())
+            }
+          } else {
+            // [0004]
+            alert(
+              '차량 선택도중 오류가 발생했습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
+            )
+            setStep(1)
           }
-        } else {
-          // [0004]
+        })
+        .catch((err) => {
           alert(
-            '차량 선택도중 오류가 발생했습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
+            `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
           )
-          setStep(1)
-        }
-      })
-      .catch((err) => {
-        alert(
-          `전산프로그램에 오류가 발생하였습니다. '010-7770-2696'으로 연락주시면 빠르게 해결해드리겠습니다.`,
-        )
-        navigate(`/mo/error`)
-      })
-    setStep(4)
+          navigate(`/mo/error`)
+        })
+      setStep(4)
+    } else {
+      alert('차량정보 5종류 모두 선택해주세요.')
+    }
   }
 
   useEffect(() => {
@@ -233,11 +236,7 @@ const Step3 = ({ setStep }) => {
       />
       <Spacer space={20} />
 
-      <StepButton
-        buttonFunc={handleButton}
-        text={'다 음'}
-        completed={isComplete}
-      />
+      <StepButton buttonFunc={handleButton} text={'다 음'} completed={true} />
       <Spacer space={40} />
       {isLoading && <Loading />}
     </MainSection>
