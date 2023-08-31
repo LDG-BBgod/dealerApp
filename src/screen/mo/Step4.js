@@ -424,7 +424,9 @@ const Step4 = ({ setStep }) => {
       />
       <Spacer space={20} />
 
-      <Text>최저 연령자 (생년월일 8자리)</Text>
+      <Text>
+        최저 연령자 <CSSpan>(생년월일 8자리)</CSSpan>
+      </Text>
       <Spacer space={8} />
       <Box>
         <InputFsn
@@ -612,4 +614,8 @@ const AddArea = styled.div`
   background-color: #7ba6f9;
   padding: 20px 10px;
   border-radius: 5px;
+`
+const CSSpan = styled.span`
+  font-size: 12px;
+  color: #ef5b5b;
 `

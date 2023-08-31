@@ -4,3 +4,4 @@
 [0004] 차량리스트 선택 오류 - selectCar
 [0005] 가입정보, 특약선택 오류 - getResult
 [0006] 차량리스트 선택 오류 - step4Back
+[0007] 인증번호 재전송 오류 - reSendAuth

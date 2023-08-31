@@ -13,7 +13,7 @@ import InputArea from '../../components/mo/InputArea'
 import Loading from '../../components/mo/Loading'
 
 import getUrlParams from '../../apis/GetUrlParams'
-import sendLog  from '../../apis/sendLog'
+import sendLog from '../../apis/sendLog'
 
 const Step2 = ({ setStep }) => {
   const navigate = useNavigate()
@@ -32,16 +32,41 @@ const Step2 = ({ setStep }) => {
       }
     }
   }
-  const handleButtonRequest = () => {
-    // 재전송 로직 생성
-    alert('재전송 기능 준비중입니다. 페이지를 새로고침해주세요.')
+  const handleButtonRequest = async () => {
+    setIsLoading(true)
+    const res = await axios
+      .post(
+        process.env.REACT_APP_RESENDAUTH,
+        { pid },
+        {
+          timeout: 5000,
+        },
+      )
+      .then((res) => {
+        setIsLoading(false)
+        if (!res.data.err) {
+          setCountdown(179)
+        } else {
+          // [0007]
+          alert(
+            '인증번호 재전송 도중 오류가 발생하였습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
+          )
+          setStep(1)
+        }
+      })
+      .catch((err) => {
+        alert(
+          `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [2]`,
+        )
+      })
+    setIsLoading(false)
   }
   const handleButtonSubmit = async () => {
     setIsLoading(true)
 
     const body = {
       authNum,
-      pid
+      pid,
     }
     const res = await axios
       .post(process.env.REACT_APP_AUTHCHECK, body, {
