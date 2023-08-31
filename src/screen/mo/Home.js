@@ -16,7 +16,7 @@ import StepButton from '../../components/mo/StepButton'
 import Overlay from '../../components/mo/Overlay'
 
 import getUrlParams from '../../apis/GetUrlParams'
-import sendLog  from '../../apis/sendLog'
+import sendLog from '../../apis/sendLog'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -68,10 +68,11 @@ const Home = () => {
       setIsAndroid(false)
     }
   }, [])
-  useEffect(()=>{
-    axios.post(process.env.REACT_APP_CREATEUSER, { pid })
-    .then((res) => {})
-    .catch((err) => {})
+  useEffect(() => {
+    axios
+      .post(process.env.REACT_APP_CREATEUSER, { pid })
+      .then((res) => {})
+      .catch((err) => {})
   }, [])
 
   const handleDownload = () => {
@@ -93,6 +94,7 @@ const Home = () => {
         >
           딜러 전용 다이렉트 보험료 비교
         </span>
+        <div>test</div>
         {isMobile ? (
           <div style={{ marginLeft: 'auto' }}>
             <Spacer space={20} />
