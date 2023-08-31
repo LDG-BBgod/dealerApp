@@ -94,7 +94,7 @@ const Home = () => {
         >
           딜러 전용 다이렉트 보험료 비교
         </span>
-        <div>test</div>
+        <div>test1</div>
         {isMobile ? (
           <div style={{ marginLeft: 'auto' }}>
             <Spacer space={20} />
