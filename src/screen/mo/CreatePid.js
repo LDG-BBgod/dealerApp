@@ -20,6 +20,8 @@ import AuthList from './AuthList'
 import GetUrlParams from '../../apis/GetUrlParams'
 
 const CreatePid = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [isComplete, setIsComplete] = useState(false)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [pid, setPid] = useState('')
@@ -29,6 +31,7 @@ const CreatePid = () => {
       .post(process.env.REACT_APP_CREATEPID, { name, phone, type: '6' })
       .then((res) => {
         setPid(res.data)
+        setIsComplete(true)
       })
   }
   const handle11Button = async () => {
@@ -36,11 +39,18 @@ const CreatePid = () => {
       .post(process.env.REACT_APP_CREATEPID, { name, phone, type: '11' })
       .then((res) => {
         setPid(res.data)
+        setIsComplete(true)
       })
   }
 
-  const handleDrag = (e) => {
-    e.dataTransfer.setData('text/plain', 'test')
+  const handleSendLink = async () => {
+    setIsLoading(true)
+    await axios
+      .post(process.env.REACT_APP_PIDSEND, { name, phone, pid })
+      .then((res) => {
+        alert('문자전송 완료~')
+      })
+    setIsLoading(false)
   }
 
   return (
@@ -90,6 +100,13 @@ const CreatePid = () => {
       {pid && (
         <div style={{ userSelect: 'text', wordBreak: 'break-all' }}>{pid}</div>
       )}
+      <Spacer space={30} />
+      <StepButton
+        buttonFunc={handleSendLink}
+        text={'링크 전달'}
+        completed={isComplete}
+      />
+      {isLoading && <Loading />}
     </MainSection>
   )
 }
