@@ -268,10 +268,17 @@ const Step1test = ({ setStep }) => {
         text={'고객에게 정보 동의 요청'}
         completed={isComplete}
       />
-      <Spacer space={8} />
-      <BottomText>자동차 보험료 확인에만 사용됩니다</BottomText>
-      <Spacer space={6} />
-      <BottomText>광고 전화는 가지 않습니다</BottomText>
+      <Spacer space={10} />
+      <div style={{ backgroundColor: '#EDEDEB', padding: 15 }}>
+        <div style={{ fontSize: 14, color: '#EC4E00', fontWeight: 'bold' }}>
+          안심하고 이용하세요!
+        </div>
+        <Spacer space={7} />
+        <div style={{ fontSize: 12, lineHeight: 1.3 }}>
+          관련 법률 및 규정에 따라 부득이하게 고객님의 동의가 필요하며, 보험료
+          계산에만 활용합니다.
+        </div>
+      </div>
       <Spacer space={40} />
       {isLoading && <Loading />}
       {isModalOpen && (
@@ -405,10 +412,4 @@ const InputPhone = styled.input`
   color: #9f9f9f;
   letter-spacing: 2px;
 `
-const BottomText = styled.div`
-  font-size: 11px;
-  color: #919191;
-  text-align: center;
-`
-
 export default Step1test
