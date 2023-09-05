@@ -275,8 +275,10 @@ const Step1test = ({ setStep }) => {
         </div>
         <Spacer space={7} />
         <div style={{ fontSize: 12, lineHeight: 1.3 }}>
-          관련 법률 및 규정에 따라 부득이하게 고객님의 동의가 필요하며, 보험료
-          계산에만 활용합니다.
+          관련 법률 및 규정에 따라 보험료 계산에만 정보가 활용됩니다.
+        </div>
+        <div style={{ fontSize: 12, lineHeight: 1.3 }}>
+          광고, 전화영업에 활용되지 않습니다.
         </div>
       </div>
       <Spacer space={40} />
