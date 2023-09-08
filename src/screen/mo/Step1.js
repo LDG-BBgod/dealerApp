@@ -12,6 +12,13 @@ import {
   changeBsn,
   changePhoneAuth,
 } from '../../actions/customer'
+import {
+  setIsOpen,
+  setContent,
+  setButtonText,
+  setButtonFunc,
+  close,
+} from '../../actions/modal'
 
 import MainSection from '../../components/mo/MainSection'
 import StepHeader from '../../components/mo/StepHeader'
@@ -51,7 +58,7 @@ const Step1test = ({ setStep }) => {
   const [isModalOpen2, setIsModalOpen2] = useState(false)
   const [isModalOpen3, setIsModalOpen3] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [content, setContent] = useState(<div></div>)
+  const [comp, setComp] = useState(<div></div>)
   const { pid } = getUrlParams()
 
   const handleName = (e) => {
@@ -86,7 +93,16 @@ const Step1test = ({ setStep }) => {
     if (isPageInit) {
       setIsModalOpen(true)
     } else {
-      alert('세션준비중입니다. 잠시후 다시 시도해주세요.')
+      batch(() => {
+        dispatch(setIsOpen(true))
+        dispatch(setContent(`세션준비중입니다. 잠시후 다시 시도해주세요.`))
+        dispatch(setButtonText('확 인'))
+        dispatch(
+          setButtonFunc(() => {
+            dispatch(close())
+          }),
+        )
+      })
     }
   }
   const handleModalButton = async () => {
@@ -118,19 +134,52 @@ const Step1test = ({ setStep }) => {
 
             setStep(2)
           } else {
-            alert('조회불가, 고객정보를 다시한번 확인해주세요.')
+            batch(() => {
+              dispatch(setIsOpen(true))
+              dispatch(
+                setContent(`조회불가, 고객정보를 다시한번 확인해주세요.`),
+              )
+              dispatch(setButtonText('확 인'))
+              dispatch(
+                setButtonFunc(() => {
+                  dispatch(close())
+                }),
+              )
+            })
           }
         } else {
           // [0002]
-          alert(
-            '인증번호 요청에 실패하였습니다. \n페이지를 새로고침해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
-          )
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(
+              setContent(
+                `인증번호 요청에 실패하였습니다. \n페이지를 새로고침해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)`,
+              ),
+            )
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+              }),
+            )
+          })
         }
       })
       .catch((err) => {
-        alert(
-          `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [1]`,
-        )
+        batch(() => {
+          dispatch(setIsOpen(true))
+          dispatch(
+            setContent(
+              `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [1]`,
+            ),
+          )
+          dispatch(setButtonText('확 인'))
+          dispatch(
+            setButtonFunc(() => {
+              dispatch(close())
+            }),
+          )
+        })
       })
     setIsLoading(false)
   }
@@ -174,15 +223,37 @@ const Step1test = ({ setStep }) => {
               setIsPageInit(true)
             } else {
               // [0001]
-              alert(
-                '페이지 준비도중 오류가 발생하였습니다. \n페이지를 새로고침해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
-              )
+              batch(() => {
+                dispatch(setIsOpen(true))
+                dispatch(
+                  setContent(
+                    `페이지 준비도중 오류가 발생하였습니다. \n페이지를 새로고침해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)`,
+                  ),
+                )
+                dispatch(setButtonText('확 인'))
+                dispatch(
+                  setButtonFunc(() => {
+                    dispatch(close())
+                  }),
+                )
+              })
             }
           })
           .catch((err) => {
-            alert(
-              `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [1]`,
-            )
+            batch(() => {
+              dispatch(setIsOpen(true))
+              dispatch(
+                setContent(
+                  `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [1]`,
+                ),
+              )
+              dispatch(setButtonText('확 인'))
+              dispatch(
+                setButtonFunc(() => {
+                  dispatch(close())
+                }),
+              )
+            })
           })
       }, 1000)
     }
@@ -307,42 +378,42 @@ const Step1test = ({ setStep }) => {
             bogiFunc1={() => {
               setIsModalOpen2(false)
               setIsModalOpen3(true)
-              setContent(<Text1 />)
+              setComp(<Text1 />)
             }}
             bogiFunc2={() => {
               setIsModalOpen2(false)
               setIsModalOpen3(true)
-              setContent(<Text2 />)
+              setComp(<Text2 />)
             }}
             bogiFunc3={() => {
               setIsModalOpen2(false)
               setIsModalOpen3(true)
-              setContent(<Text3 />)
+              setComp(<Text3 />)
             }}
             bogiFunc4={() => {
               setIsModalOpen2(false)
               setIsModalOpen3(true)
-              setContent(<Text4 />)
+              setComp(<Text4 />)
             }}
             bogiFunc5={() => {
               setIsModalOpen2(false)
               setIsModalOpen3(true)
-              setContent(<Text5 />)
+              setComp(<Text5 />)
             }}
             bogiFunc6={() => {
               setIsModalOpen2(false)
               setIsModalOpen3(true)
-              setContent(<Text6 />)
+              setComp(<Text6 />)
             }}
             bogiFunc7={() => {
               setIsModalOpen2(false)
               setIsModalOpen3(true)
-              setContent(<Text7 />)
+              setComp(<Text7 />)
             }}
             bogiFunc8={() => {
               setIsModalOpen2(false)
               setIsModalOpen3(true)
-              setContent(<Text8 />)
+              setComp(<Text8 />)
             }}
           />
         </Overlay>
@@ -357,7 +428,7 @@ const Step1test = ({ setStep }) => {
             }}
           >
             <img src="/img/back.svg" alt="exit" height={20} width={20} />
-            {content}
+            {comp}
           </div>
         </Overlay>
       )}

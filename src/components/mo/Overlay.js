@@ -42,7 +42,7 @@ const ModalContainer = styled.div`
 const ModalContent = styled.div`
   box-sizing: border-box;
   margin: 25px;
-  background-color: white;
+  background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   width: 100%;
@@ -53,7 +53,7 @@ const ModalContent = styled.div`
 const ModalContent2 = styled.div`
   box-sizing: border-box;
   margin: 25px;
-  background-color: white;
+  background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   width: 600px;

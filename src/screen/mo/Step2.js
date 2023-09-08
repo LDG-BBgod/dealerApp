@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react'
 import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-
+import { useDispatch, useSelector, batch } from 'react-redux'
 import axios from 'axios'
+
+import {
+  setIsOpen,
+  setContent,
+  setButtonText,
+  setButtonFunc,
+  close,
+} from '../../actions/modal'
 
 import MainSection from '../../components/mo/MainSection'
 import StepHeader from '../../components/mo/StepHeader'
@@ -17,6 +25,7 @@ import sendLog from '../../apis/sendLog'
 
 const Step2 = ({ setStep }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [authNum, setAuthNum] = useState('')
   const [isComplete, setIsComplete] = useState(false)
   const [countdown, setCountdown] = useState(179) // 3분 - 1초
@@ -48,16 +57,38 @@ const Step2 = ({ setStep }) => {
           setCountdown(179)
         } else {
           // [0007]
-          alert(
-            '인증번호 재전송 도중 오류가 발생하였습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
-          )
-          setStep(1)
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(
+              setContent(
+                `인증번호 재전송 도중 오류가 발생하였습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)`,
+              ),
+            )
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+                setStep(1)
+              }),
+            )
+          })
         }
       })
       .catch((err) => {
-        alert(
-          `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [2]`,
-        )
+        batch(() => {
+          dispatch(setIsOpen(true))
+          dispatch(
+            setContent(
+              `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [2]`,
+            ),
+          )
+          dispatch(setButtonText('확 인'))
+          dispatch(
+            setButtonFunc(() => {
+              dispatch(close())
+            }),
+          )
+        })
       })
     setIsLoading(false)
   }
@@ -79,26 +110,68 @@ const Step2 = ({ setStep }) => {
             setStep(3)
           } else {
             if (res.data.msg.text === '3년') {
-              alert(
-                '고객님은 현재 계약해지 시점과 신규 가입시점의 공백이 3년 이내의 계약자로서 카보를 통한 보험료 계산이 불가합니다. 회사를 통해 문의하여 주시기 바랍니다.',
-              )
-              setStep(1)
+              batch(() => {
+                dispatch(setIsOpen(true))
+                dispatch(
+                  setContent(
+                    `고객님은 현재 계약해지 시점과 신규 가입시점의 공백이 3년 이내의 계약자로서 카보를 통한 보험료 계산이 불가합니다. 회사를 통해 문의하여 주시기 바랍니다.`,
+                  ),
+                )
+                dispatch(setButtonText('확 인'))
+                dispatch(
+                  setButtonFunc(() => {
+                    dispatch(close())
+                    setStep(1)
+                  }),
+                )
+              })
             } else {
-              alert('인증번호 6자리를 다시 확인해주세요.')
+              batch(() => {
+                dispatch(setIsOpen(true))
+                dispatch(setContent(`인증번호 6자리를 다시 확인해주세요.`))
+                dispatch(setButtonText('확 인'))
+                dispatch(
+                  setButtonFunc(() => {
+                    dispatch(close())
+                  }),
+                )
+              })
             }
           }
         } else {
           // [0003]
-          alert(
-            '인증번호 확인도중 오류가 발생했습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
-          )
-          setStep(1)
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(
+              setContent(
+                `인증번호 확인도중 오류가 발생했습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)`,
+              ),
+            )
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+                setStep(1)
+              }),
+            )
+          })
         }
       })
       .catch((err) => {
-        alert(
-          `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [2]`,
-        )
+        batch(() => {
+          dispatch(setIsOpen(true))
+          dispatch(
+            setContent(
+              `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [2]`,
+            ),
+          )
+          dispatch(setButtonText('확 인'))
+          dispatch(
+            setButtonFunc(() => {
+              dispatch(close())
+            }),
+          )
+        })
       })
     setIsLoading(false)
   }

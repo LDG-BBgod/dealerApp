@@ -1,11 +1,19 @@
+// 모듈
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, batch } from 'react-redux'
 import axios from 'axios'
-
+// 리덕스
 import { changeIsLogin } from '../../actions/dealer'
-
+import {
+  setIsOpen,
+  setContent,
+  setButtonText,
+  setButtonFunc,
+  close,
+} from '../../actions/modal'
+// 컴포넌트
 import MainSection from '../../components/mo/MainSection'
 import MobileHeader from '../../components/mo/MobileHeader'
 import Spacer from '../../components/mo/Spacer'
@@ -14,7 +22,7 @@ import AppDownload from '../../components/mo/AppDownload'
 import Loading from '../../components/mo/Loading'
 import StepButton from '../../components/mo/StepButton'
 import Overlay from '../../components/mo/Overlay'
-
+// API
 import getUrlParams from '../../apis/GetUrlParams'
 import sendLog from '../../apis/sendLog'
 
@@ -51,13 +59,33 @@ const Home = () => {
           sendLog(pid, '로그인', 'log')
           navigate(`/mo/compare?dtype=${dtype}&pid=${pid}`)
         } else {
-          alert('잘못된 비밀번호입니다')
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(setContent('잘못된 비밀번호입니다.'))
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+              }),
+            )
+          })
         }
       })
       .catch((res) => {
-        alert(
-          `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [0]`,
-        )
+        batch(() => {
+          dispatch(setIsOpen(true))
+          dispatch(
+            setContent(
+              `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요. [0]`,
+            ),
+          )
+          dispatch(setButtonText('확 인'))
+          dispatch(
+            setButtonFunc(() => {
+              dispatch(close())
+            }),
+          )
+        })
       })
     setIsLoading(false)
   }

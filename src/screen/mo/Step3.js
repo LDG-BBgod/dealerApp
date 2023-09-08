@@ -1,9 +1,16 @@
 import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector, batch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import { carSeleting, carSeleted } from '../../actions/carSelectComplete'
+import {
+  setIsOpen,
+  setContent,
+  setButtonText,
+  setButtonFunc,
+  close
+} from '../../actions/modal'
 
 import MainSection from '../../components/mo/MainSection'
 import StepHeader from '../../components/mo/StepHeader'
@@ -60,9 +67,16 @@ const Step3 = ({ setStep }) => {
         returnData = res.data
       })
       .catch((err) => {
-        alert(
-          `차량정보 조회에 오류가 발생하였습니다. 잠시후 다시 시도해주세요.`,
-        )
+        batch(() => {
+          dispatch(setIsOpen(true))
+          dispatch(setContent(`차량정보 조회에 오류가 발생하였습니다. 잠시후 다시 시도해주세요.`))
+          dispatch(setButtonText('확 인'))
+          dispatch(
+            setButtonFunc(() => {
+              dispatch(close())
+            }),
+          )
+        })
       })
 
     setIsLoading(false)
@@ -134,20 +148,43 @@ const Step3 = ({ setStep }) => {
             }
           } else {
             // [0004]
-            alert(
-              '차량 선택도중 오류가 발생했습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
-            )
-            setStep(1)
+            batch(() => {
+              dispatch(setIsOpen(true))
+              dispatch(setContent(`차량 선택도중 오류가 발생했습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)`))
+              dispatch(setButtonText('확 인'))
+              dispatch(
+                setButtonFunc(() => {
+                  dispatch(close())
+                  setStep(1)
+                }),
+              )
+            })
           }
         })
         .catch((err) => {
-          alert(
-            `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[3]`,
-          )
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(setContent(`전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[3]`))
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+              }),
+            )
+          })
         })
       setStep(4)
     } else {
-      alert('차량정보 5종류 모두 선택해주세요.')
+      batch(() => {
+        dispatch(setIsOpen(true))
+        dispatch(setContent(`차량정보 5종류 모두 선택해주세요.`))
+        dispatch(setButtonText('확 인'))
+        dispatch(
+          setButtonFunc(() => {
+            dispatch(close())
+          }),
+        )
+      })
     }
   }
 

@@ -1,8 +1,15 @@
 // 모듈
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector, batch } from 'react-redux'
 // 리덕스
-
+import {
+  setIsOpen,
+  setContent,
+  setButtonText,
+  setButtonFunc,
+  close
+} from '../../actions/modal'
 // 컴포넌트
 import Step1 from './Step1'
 import Step2 from './Step2'
@@ -14,6 +21,7 @@ import GetUrlParams from '../../apis/GetUrlParams'
 
 const Compare = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [step, setStep] = useState(1)
   const [isReady, setIsReady] = useState(false)
 

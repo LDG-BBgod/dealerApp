@@ -90,3 +90,14 @@ link.href = URL.createObjectURL(
   new Blob([manifestString], { type: 'application/json' }),
 )
 document.head.appendChild(link)
+
+batch(() => {
+  dispatch(setIsOpen(true))
+  dispatch(setContent(``))
+  dispatch(setButtonText('확 인'))
+  dispatch(
+    setButtonFunc(() => {
+      dispatch(close())
+    }),
+  )
+})

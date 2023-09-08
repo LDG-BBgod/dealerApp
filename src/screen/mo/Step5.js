@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react'
 import { styled } from 'styled-components'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector, batch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+
+import {
+  setIsOpen,
+  setContent,
+  setButtonText,
+  setButtonFunc,
+  close,
+} from '../../actions/modal'
 
 import MainSection from '../../components/mo/MainSection'
 import StepHeader from '../../components/mo/StepHeader'
@@ -21,6 +29,7 @@ import sendLog from '../../apis/sendLog'
 
 const Step5 = ({ setStep }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const phoneNum = useSelector((state) => state.phone.phone)
   const { isMobile } = useSelector((state) => state.dealer)
   const { csname, phoneAuth, fsn, bsn } = useSelector((state) => state.customer)
@@ -66,7 +75,16 @@ const Step5 = ({ setStep }) => {
     if (countTrueValues(companyIsSelected) !== 0) {
       setIsModalOpen(true)
     } else {
-      alert('1개 이상 선택해주세요.')
+      batch(() => {
+        dispatch(setIsOpen(true))
+        dispatch(setContent(`1개 이상 선택해주세요.`))
+        dispatch(setButtonText('확 인'))
+        dispatch(
+          setButtonFunc(() => {
+            dispatch(close())
+          }),
+        )
+      })
     }
   }
   const handelSendSMS = async () => {
@@ -108,17 +126,42 @@ const Step5 = ({ setStep }) => {
           timeout: 10000,
         })
         .then((res) => {
-          alert('문자 전송이 완료되었습니다.')
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(setContent(`문자 전송이 완료되었습니다.`))
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+              }),
+            )
+          })
         })
         .catch((err) => {
-          alert(
-            `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[5]`,
-          )
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(setContent(`전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[5]`))
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+              }),
+            )
+          })
         })
       setIsLoading(false)
       setIsModalOpen(false)
     } else {
-      alert('올바른 전화번호를 입력해 주세요.')
+      batch(() => {
+        dispatch(setIsOpen(true))
+        dispatch(setContent(`올바른 전화번호를 입력해 주세요.`))
+        dispatch(setButtonText('확 인'))
+        dispatch(
+          setButtonFunc(() => {
+            dispatch(close())
+          }),
+        )
+      })
     }
   }
 
@@ -154,13 +197,29 @@ const Step5 = ({ setStep }) => {
           }
         })
         .catch((err) => {
-          alert(
-            `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[5]`,
-          )
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(setContent(`전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[5]`))
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+              }),
+            )
+          })
         })
       setIsLoading(false)
     } else {
-      alert('1개만 선택해주세요.')
+      batch(() => {
+        dispatch(setIsOpen(true))
+        dispatch(setContent(`1개만 선택해주세요.`))
+        dispatch(setButtonText('확 인'))
+        dispatch(
+          setButtonFunc(() => {
+            dispatch(close())
+          }),
+        )
+      })
     }
   }
 

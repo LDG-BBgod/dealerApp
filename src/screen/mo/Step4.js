@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, batch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import axios from 'axios'
 
 import { setResult } from '../../actions/result'
+import {
+  setIsOpen,
+  setContent,
+  setButtonText,
+  setButtonFunc,
+  close,
+} from '../../actions/modal'
 
 import MainSection from '../../components/mo/MainSection'
 import StepHeader from '../../components/mo/StepHeader'
@@ -228,20 +235,51 @@ const Step4 = ({ setStep }) => {
             if (res.data.msg.success) {
               setStep(3)
             } else {
-              alert(res.data.msg.text)
+              batch(() => {
+                dispatch(setIsOpen(true))
+                dispatch(setContent(`${res.data.msg.text}`))
+                dispatch(setButtonText('확 인'))
+                dispatch(
+                  setButtonFunc(() => {
+                    dispatch(close())
+                  }),
+                )
+              })
             }
           } else {
             // [0006]
-            alert(
-              '이전페이지를 불러오는도중 오류가 발생하였습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
-            )
-            setStep(1)
+            batch(() => {
+              dispatch(setIsOpen(true))
+              dispatch(
+                setContent(
+                  `이전페이지를 불러오는도중 오류가 발생하였습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)`,
+                ),
+              )
+              dispatch(setButtonText('확 인'))
+              dispatch(
+                setButtonFunc(() => {
+                  dispatch(close())
+                  setStep(1)
+                }),
+              )
+            })
           }
         })
         .catch((err) => {
-          alert(
-            `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[4]`,
-          )
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(
+              setContent(
+                `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[4]`,
+              ),
+            )
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+              }),
+            )
+          })
         })
     }
     if (isClickedPrev) {
@@ -301,20 +339,51 @@ const Step4 = ({ setStep }) => {
                 )
                 setStep(5)
               } else {
-                alert(res.data.msg.text)
+                batch(() => {
+                  dispatch(setIsOpen(true))
+                  dispatch(setContent(`${res.data.msg.text}`))
+                  dispatch(setButtonText('확 인'))
+                  dispatch(
+                    setButtonFunc(() => {
+                      dispatch(close())
+                    }),
+                  )
+                })
               }
             } else {
               // [0005]
-              alert(
-                '보험가입정보 선택도중 오류가 발생하였습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)',
-              )
-              setStep(1)
+              batch(() => {
+                dispatch(setIsOpen(true))
+                dispatch(
+                  setContent(
+                    `보험가입정보 선택도중 오류가 발생하였습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)`,
+                  ),
+                )
+                dispatch(setButtonText('확 인'))
+                dispatch(
+                  setButtonFunc(() => {
+                    dispatch(close())
+                    setStep(1)
+                  }),
+                )
+              })
             }
           })
           .catch((err) => {
-            alert(
-              `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[4]`,
-            )
+            batch(() => {
+              dispatch(setIsOpen(true))
+              dispatch(
+                setContent(
+                  `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[4]`,
+                ),
+              )
+              dispatch(setButtonText('확 인'))
+              dispatch(
+                setButtonFunc(() => {
+                  dispatch(close())
+                }),
+              )
+            })
           })
       } else {
         setIsClickedNext(false)
@@ -326,9 +395,37 @@ const Step4 = ({ setStep }) => {
         setIsModalOpen(true)
       } else {
         setIsClickedNext(false)
-        alert(
-          '운전자범위, 최저 연령자 "생년월일 8자리" , 보장 정도를 모두 선택해주세요.',
-        )
+        if (minBirth.length === 6 || secondBirth.length === 6) {
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(
+              setContent(
+                `생년월일을 8자리 입력해주세요.\n ex)19960101`,
+              ),
+            )
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+              }),
+            )
+          })
+        } else {
+          batch(() => {
+            dispatch(setIsOpen(true))
+            dispatch(
+              setContent(
+                `운전자범위, 최저 연령자 "생년월일 8자리" , 보장 정도를 모두 선택해주세요.`,
+              ),
+            )
+            dispatch(setButtonText('확 인'))
+            dispatch(
+              setButtonFunc(() => {
+                dispatch(close())
+              }),
+            )
+          })
+        }
       }
     } else {
       setIsModalOpen(false)

@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react'
 import { styled } from 'styled-components'
+import { useDispatch, useSelector, batch } from 'react-redux'
+
+import {
+  setIsOpen,
+  setContent,
+  setButtonText,
+  setButtonFunc,
+  close,
+} from '../../actions/modal'
 
 import Spacer from './Spacer'
 import Overlay from './Overlay'
@@ -14,6 +23,7 @@ const SelectArea = ({
   step = null,
   posible = false,
 }) => {
+  const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(null)
   const [arrData, setArrData] = useState([])
 
@@ -23,7 +33,16 @@ const SelectArea = ({
       setArrData(list)
       setIsModalOpen(true)
     } else {
-      alert('이전단계를 먼저 선택해주세요')
+              batch(() => {
+          dispatch(setIsOpen(true))
+          dispatch(setContent(`이전단계를 먼저 선택해주세요.`))
+          dispatch(setButtonText('확 인'))
+          dispatch(
+            setButtonFunc(() => {
+              dispatch(close())
+            }),
+          )
+        })
     }
   }
   const handleOption = (text, id) => {
@@ -32,7 +51,6 @@ const SelectArea = ({
   }
 
   // 뒤로가기 핸들링
-
 
   return (
     <div>
@@ -54,7 +72,9 @@ const SelectArea = ({
             src="/img/back.svg"
             alt="logo"
             style={{ width: 15, height: 15 }}
-            onClick={()=>{setIsModalOpen(false)}}
+            onClick={() => {
+              setIsModalOpen(false)
+            }}
           />
           <Spacer space={15} />
           {arrData.map((item, index) => (

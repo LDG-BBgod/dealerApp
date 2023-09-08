@@ -1,4 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
+
+
 import { changeCarInfo } from '../reducers/carInfo'
 import { carSelectComplete } from '../reducers/carSelectComplete'
 import { dealer } from '../reducers/dealer'
@@ -6,6 +8,7 @@ import { phone } from '../reducers/phone'
 import { jumin } from '../reducers/jumin'
 import { resultData } from '../reducers/resultData'
 import { customer } from '../reducers/customer'
+import { modal } from '../reducers/modal'
 
 import logger from 'redux-logger'
 
@@ -16,8 +19,8 @@ const rootReducer = combineReducers({
   phone,
   jumin,
   resultData,
-  customer
-
+  customer,
+  modal,
 })
 
 // const store = createStore(rootReducer, applyMiddleware(logger))

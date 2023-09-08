@@ -1,7 +1,7 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { isMobile } from 'react-device-detect'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
 import { changeIsMobile } from './actions/dealer'
@@ -11,6 +11,7 @@ import Root from './screen/mo/Root'
 import Compare from './screen/mo/Compare'
 import CreatePid from './screen/mo/CreatePid'
 import ErrorPage from './screen/mo/ErrorPage'
+import ModalScreen from './components/mo/ModalScreen'
 
 import getUrlParams from './apis/GetUrlParams'
 
@@ -18,6 +19,9 @@ function App() {
   const location = useLocation()
   const dispatch = useDispatch()
   const { pid } = getUrlParams()
+  const { isOpen, content, buttonText, buttonFunc } = useSelector(
+    (state) => state.modal,
+  )
 
   useEffect(() => {
     if (location.pathname !== '/mo/compare') {
@@ -43,6 +47,13 @@ function App() {
         <Route path="/mo/cp" Component={CreatePid} />
         <Route path="/mo/error" Component={ErrorPage} />
       </Routes>
+      {isOpen && (
+        <ModalScreen
+          content={content}
+          buttonText={buttonText}
+          buttonFunc={buttonFunc}
+        />
+      )}
     </div>
   )
 }
