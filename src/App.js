@@ -6,12 +6,14 @@ import axios from 'axios'
 
 import { changeIsMobile } from './actions/dealer'
 
+import Admin from './screen/admin/admin'
 import Home from './screen/mo/Home'
 import Root from './screen/mo/Root'
 import Compare from './screen/mo/Compare'
 import CreatePid from './screen/mo/CreatePid'
 import ErrorPage from './screen/mo/ErrorPage'
 import ModalScreen from './components/mo/ModalScreen'
+
 
 import getUrlParams from './apis/GetUrlParams'
 
@@ -42,6 +44,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" Component={Root} />
+        <Route path="/admin" Component={Admin} />
         <Route path="/mo" Component={Home} />
         <Route path="/mo/compare" Component={Compare} />
         <Route path="/mo/cp" Component={CreatePid} />

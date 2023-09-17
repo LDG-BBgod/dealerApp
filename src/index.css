@@ -61,7 +61,6 @@ input{
 input:focus{
 	outline: none;
 	box-shadow: none;
-	border: none;
 }
 input::placeholder {
 	color: #cacaca;
