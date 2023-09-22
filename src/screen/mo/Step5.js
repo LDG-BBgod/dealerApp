@@ -236,7 +236,7 @@ const Step5 = ({ setStep }) => {
       })
       return newData
     }
-    if (dtype === 'A') {
+    if (dtype === 'sixtype') {
       let cutData = result
       cutData = cutData.filter((item) => {
         return (
