@@ -154,6 +154,40 @@ const Admin = () => {
                         <div>{item.fsn}</div>
                         <div>주민뒤</div>
                         <div>{item.bsn}</div>
+                        <div>차량정보1</div>
+                        <div>{item.carValue1}</div>
+                        <div>차량정보2</div>
+                        <div>{item.carValue2}</div>
+                        <div>차량정보3</div>
+                        <div>{item.carValue3}</div>
+                        <div>차량정보4</div>
+                        <div>{item.carValue4}</div>
+                        <div>차량정보5</div>
+                        <div>{item.carValue5}</div>
+                        <div>운전자범위</div>
+                        <div>{item.range}</div>
+                        <div>최소연령</div>
+                        <div>{item.minBirth}</div>
+                        <div>두번째연령</div>
+                        <div>{item.secondBirth}</div>
+                        <div>보장정도</div>
+                        <div>{item.level}</div>
+                        <div>옵션1</div>
+                        <div>{item.option1}</div>
+                        <div>옵션2</div>
+                        <div>{item.option2}</div>
+                        <div>옵션3</div>
+                        <div>{item.option3}</div>
+                        <div>옵션4</div>
+                        <div>{item.option4}</div>
+                        <div>옵션5</div>
+                        <div>{item.option5}</div>
+                        <div>옵션6</div>
+                        <div>{item.option6}</div>
+                        <div>옵션7</div>
+                        <div>{item.option7}</div>
+                        <div>옵션8</div>
+                        <div>{item.option8}</div>
                         <div>산출결과</div>
                         <div style={{ whiteSpace: 'pre-wrap' }}>
                           {item.list}

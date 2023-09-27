@@ -30,6 +30,9 @@ const Step4 = ({ setStep }) => {
   const dispatch = useDispatch()
   const { jumin } = useSelector((state) => state.jumin)
   const { csname, phoneAuth, fsn, bsn } = useSelector((state) => state.customer)
+  const { carValue1, carValue2, carValue3, carValue4, carValue5 } = useSelector(
+    (state) => state.changeCarInfo,
+  )
   const [isComplete, setIsComplete] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -326,6 +329,14 @@ const Step4 = ({ setStep }) => {
             if (!res.data.err) {
               if (res.data.msg.success) {
                 dispatch(setResult(res.data.msg.text))
+                console.log(
+                  range.id,
+                  minBirth,
+                  secondBirth,
+                  level.id,
+                  option1.id,
+                  option4.id,
+                )
                 sendLog(
                   pid,
                   {
@@ -334,6 +345,23 @@ const Step4 = ({ setStep }) => {
                     fsn,
                     bsn,
                     list: res.data.msg.text,
+                    carValue1,
+                    carValue2,
+                    carValue3,
+                    carValue4,
+                    carValue5,
+                    range: range.text,
+                    minBirth,
+                    secondBirth,
+                    level: level.text,
+                    option1: option1.text,
+                    option2: option2.text,
+                    option3: option3.text,
+                    option4: option4.text,
+                    option5: option5.text,
+                    option6: option6.text,
+                    option7: option7.text,
+                    option8: option8.text,
                   },
                   'customer',
                 )
@@ -398,11 +426,7 @@ const Step4 = ({ setStep }) => {
         if (minBirth.length === 6 || secondBirth.length === 6) {
           batch(() => {
             dispatch(setIsOpen(true))
-            dispatch(
-              setContent(
-                `생년월일을 8자리 입력해주세요.\n ex)19960101`,
-              ),
-            )
+            dispatch(setContent(`생년월일을 8자리 입력해주세요.\n ex)19960101`))
             dispatch(setButtonText('확 인'))
             dispatch(
               setButtonFunc(() => {

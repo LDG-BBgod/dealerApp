@@ -9,8 +9,15 @@ import {
   setContent,
   setButtonText,
   setButtonFunc,
-  close
+  close,
 } from '../../actions/modal'
+import {
+  changeCarValue1,
+  changeCarValue2,
+  changeCarValue3,
+  changeCarValue4,
+  changeCarValue5,
+} from '../../actions/carInfo'
 
 import MainSection from '../../components/mo/MainSection'
 import StepHeader from '../../components/mo/StepHeader'
@@ -69,7 +76,11 @@ const Step3 = ({ setStep }) => {
       .catch((err) => {
         batch(() => {
           dispatch(setIsOpen(true))
-          dispatch(setContent(`차량정보 조회에 오류가 발생하였습니다. 잠시후 다시 시도해주세요.`))
+          dispatch(
+            setContent(
+              `차량정보 조회에 오류가 발생하였습니다. 잠시후 다시 시도해주세요.`,
+            ),
+          )
           dispatch(setButtonText('확 인'))
           dispatch(
             setButtonFunc(() => {
@@ -144,13 +155,24 @@ const Step3 = ({ setStep }) => {
         .then((res) => {
           if (!res.data.err) {
             if (res.data.msg.success) {
-              dispatch(carSeleted())
+              batch(() => {
+                dispatch(changeCarValue1(carValue1.text))
+                dispatch(changeCarValue2(carValue2.text))
+                dispatch(changeCarValue3(carValue3.text))
+                dispatch(changeCarValue4(carValue4.text))
+                dispatch(changeCarValue5(carValue5.text))
+                dispatch(carSeleted())
+              })
             }
           } else {
             // [0004]
             batch(() => {
               dispatch(setIsOpen(true))
-              dispatch(setContent(`차량 선택도중 오류가 발생했습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)`))
+              dispatch(
+                setContent(
+                  `차량 선택도중 오류가 발생했습니다. \n처음부터 다시 진행해주세요. \n(베타서비스이기때문에 약간의 오류가 발생할 수 있습니다. 죄송합니다.)`,
+                ),
+              )
               dispatch(setButtonText('확 인'))
               dispatch(
                 setButtonFunc(() => {
@@ -164,7 +186,11 @@ const Step3 = ({ setStep }) => {
         .catch((err) => {
           batch(() => {
             dispatch(setIsOpen(true))
-            dispatch(setContent(`전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[3]`))
+            dispatch(
+              setContent(
+                `전산프로그램에 오류가 발생하였습니다. \n페이지를 새로고침해주세요.[3]`,
+              ),
+            )
             dispatch(setButtonText('확 인'))
             dispatch(
               setButtonFunc(() => {
