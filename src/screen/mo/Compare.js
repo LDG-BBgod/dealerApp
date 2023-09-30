@@ -77,6 +77,7 @@ const Compare = () => {
 
   //웹소켓 연결
   useEffect(() => {
+    console.log(`${process.env.REACT_APP_WS}?id=${pid}`)
     const ws = new WebSocket(`${process.env.REACT_APP_WS}?id=${pid}`)
 
     return () => {
