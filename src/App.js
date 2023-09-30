@@ -14,7 +14,6 @@ import CreatePid from './screen/mo/CreatePid'
 import ErrorPage from './screen/mo/ErrorPage'
 import ModalScreen from './components/mo/ModalScreen'
 
-
 import getUrlParams from './apis/GetUrlParams'
 
 function App() {
@@ -25,16 +24,17 @@ function App() {
     (state) => state.modal,
   )
 
-  useEffect(() => {
-    if (location.pathname !== '/mo/compare') {
-      const shutDown = async () => {
-        await axios
-          .post(process.env.REACT_APP_SHUTDOWN, { pid })
-          .catch((err) => {})
-      }
-      shutDown()
-    }
-  }, [location])
+  // 웹소켓 생성시하면서 삭제함
+  // useEffect(() => {
+  //   if (location.pathname !== '/mo/compare') {
+  //     const shutDown = async () => {
+  //       await axios
+  //         .post(process.env.REACT_APP_SHUTDOWN, { pid })
+  //         .catch((err) => {})
+  //     }
+  //     shutDown()
+  //   }
+  // }, [location])
 
   useEffect(() => {
     dispatch(changeIsMobile(isMobile))

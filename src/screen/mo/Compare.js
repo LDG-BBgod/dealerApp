@@ -2,13 +2,14 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector, batch } from 'react-redux'
+import axios from 'axios'
 // 리덕스
 import {
   setIsOpen,
   setContent,
   setButtonText,
   setButtonFunc,
-  close
+  close,
 } from '../../actions/modal'
 // 컴포넌트
 import Step1 from './Step1'
@@ -17,13 +18,14 @@ import Step3 from './Step3'
 import Step4 from './Step4'
 import Step5 from './Step5'
 // API
-import GetUrlParams from '../../apis/GetUrlParams'
+import getUrlParams from '../../apis/GetUrlParams'
 
 const Compare = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [step, setStep] = useState(1)
   const [isReady, setIsReady] = useState(false)
+  const { pid } = getUrlParams()
 
   const steps = [Step1, Step2, Step3, Step4, Step5]
 
@@ -40,6 +42,7 @@ const Compare = () => {
     }
   }, [])
 
+  //새로고침 막기
   useEffect(() => {
     const handleBeforUnload = (e) => {
       e.preventDefault()
@@ -51,6 +54,7 @@ const Compare = () => {
     }
   }, [])
 
+  //뒤로가기 막기
   useEffect(() => {
     const curPage = window.history.state.index
     if (curPage !== 'dumpPage') {
@@ -71,6 +75,16 @@ const Compare = () => {
     window.addEventListener('popstate', handleBackNavigation)
   }, [])
 
+  //웹소켓 연결
+  useEffect(() => {
+    const ws = new WebSocket(`${process.env.REACT_APP_WS}?id=${pid}`)
+
+    return () => {
+      ws.close()
+    }
+  }, [])
+
+  //페이지 디자인시 사용
   useEffect(() => {
     // 페이지 디자인시 사용
     // setStep(4)
