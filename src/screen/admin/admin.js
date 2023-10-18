@@ -7,7 +7,7 @@ import Spacer from '../../components/mo/Spacer'
 const Admin = () => {
   const [id, setId] = useState('')
   const [pw, setPw] = useState('')
-  const [names, setNames] = useState([])
+  const [data, setData] = useState([])
   const [isLogin, setIsLogin] = useState(false)
   const [isList, setList] = useState(true)
   const [user, setUser] = useState({})
@@ -38,7 +38,7 @@ const Admin = () => {
         pw,
       })
       .then((res) => {
-        setNames(res.data.name)
+        setData(res.data.data)
       })
       .catch((err) => {
         alert('에러발생 전화주셈')
@@ -68,7 +68,7 @@ const Admin = () => {
         <>
           {isList ? (
             <>
-              {names.map((item, index) => (
+              {data.map((item, index) => (
                 <div
                   style={{
                     display: 'flex',
@@ -80,10 +80,12 @@ const Admin = () => {
                   <Spacer space={20} />
                   <CSButton
                     onClick={() => {
-                      handleListButton(item)
+                      handleListButton(item.name)
                     }}
                   >
-                    {item}
+                    {item.isLooked ? '' : '| -------------- '}
+                    {item.name}
+                    {item.isLooked ? '' : ' -------------- |'}
                   </CSButton>
                 </div>
               ))}
@@ -110,6 +112,7 @@ const Admin = () => {
                     style={{ width: 60, height: 30 }}
                     onClick={() => {
                       setList(true)
+                      getDataBase()
                     }}
                   >
                     뒤로
